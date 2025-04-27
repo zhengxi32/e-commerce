@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xi.mapper.UserAddrOrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xi.domain.UserAddrOrder">
+        <id column="addr_order_id" property="addrOrderId" />
+        <result column="addr_id" property="addrId" />
+        <result column="user_id" property="userId" />
+        <result column="receiver" property="receiver" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="area" property="area" />
+        <result column="addr" property="addr" />
+        <result column="post_code" property="postCode" />
+        <result column="mobile" property="mobile" />
+        <result column="create_time" property="createTime" />
+        <result column="version" property="version" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        addr_order_id, addr_id, user_id, receiver, province, city, area, addr, post_code, mobile, create_time, version
+    </sql>
+
+</mapper>

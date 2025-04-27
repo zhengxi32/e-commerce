@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xi.mapper.SkuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xi.domain.Sku">
+        <id column="sku_id" property="skuId" />
+        <result column="sku_name" property="skuName" />
+        <result column="prod_id" property="prodId" />
+        <result column="prod_name" property="prodName" />
+        <result column="properties" property="properties" />
+        <result column="price" property="price" />
+        <result column="stocks" property="stocks" />
+        <result column="party_code" property="partyCode" />
+        <result column="model_id" property="modelId" />
+        <result column="pic" property="pic" />
+        <result column="weight" property="weight" />
+        <result column="volume" property="volume" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="version" property="version" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        sku_id, sku_name, prod_id, prod_name, properties, price, stocks, party_code, model_id, pic, weight, volume, status, create_time, update_time, version
+    </sql>
+
+</mapper>

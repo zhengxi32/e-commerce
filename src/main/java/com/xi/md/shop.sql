@@ -1,6 +1,6 @@
-drop table if exists tb_shop_detail;
+drop table if exists tb_shop;
 
-create table tb_shop_detail
+create table tb_shop
 (
     shop_id            bigint auto_increment comment '店铺ID'
         primary key,
@@ -190,29 +190,3 @@ CREATE TABLE `tb_user_addr_order`
     PRIMARY KEY (`addr_order_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8 COMMENT ='用户订单配送地址';
-
-drop table if exists tb_order_item;
-
-CREATE TABLE `tb_order_item`
-(
-    `order_item_id`        bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '订单项ID',
-    `shop_id`              bigint(20)          NOT NULL COMMENT '店铺id',
-    `order_number`         varchar(50)         NOT NULL COMMENT '订单order_number',
-    `prod_id`              bigint(20) unsigned NOT NULL COMMENT '产品ID',
-    `sku_id`               bigint(20) unsigned NOT NULL COMMENT '产品SkuID',
-    `prod_count`           int(11)             NOT NULL DEFAULT '0' COMMENT '购物车产品个数',
-    `prod_name`            varchar(120)        NOT NULL DEFAULT '' COMMENT '产品名称',
-    `sku_name`             varchar(120)                 DEFAULT NULL COMMENT 'sku名称',
-    `pic`                  varchar(255)        NOT NULL DEFAULT '' COMMENT '产品主图片路径',
-    `price`                decimal(15, 2)      NOT NULL COMMENT '产品价格',
-    `user_id`              varchar(36)         NOT NULL DEFAULT '' COMMENT '用户Id',
-    `product_total_amount` decimal(15, 2)      NOT NULL COMMENT '商品总金额',
-    `rec_time`             datetime            NOT NULL COMMENT '购物时间',
-    `comm_sts`             int(1)              NOT NULL DEFAULT '0' COMMENT '评论状态： 0 未评价  1 已评价',
-    `distribution_card_no` varchar(36)                  DEFAULT NULL COMMENT '推广员使用的推销卡号',
-    `basket_date`          datetime                     DEFAULT NULL COMMENT '加入购物车时间',
-    PRIMARY KEY (`order_item_id`),
-    KEY `order_number` (`order_number`)
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 6
-  DEFAULT CHARSET = utf8 COMMENT ='订单项';

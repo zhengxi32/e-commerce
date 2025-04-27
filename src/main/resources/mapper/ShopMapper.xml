@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xi.mapper.ShopMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xi.domain.Shop">
+        <id column="shop_id" property="shopId" />
+        <result column="shop_name" property="shopName" />
+        <result column="user_id" property="userId" />
+        <result column="shop_type" property="shopType" />
+        <result column="intro" property="intro" />
+        <result column="shop_notice" property="shopNotice" />
+        <result column="shop_industry" property="shopIndustry" />
+        <result column="shop_owner" property="shopOwner" />
+        <result column="mobile" property="mobile" />
+        <result column="tel" property="tel" />
+        <result column="shop_lat" property="shopLat" />
+        <result column="shop_lng" property="shopLng" />
+        <result column="shop_address" property="shopAddress" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="area" property="area" />
+        <result column="pca_code" property="pcaCode" />
+        <result column="shop_logo" property="shopLogo" />
+        <result column="shop_photos" property="shopPhotos" />
+        <result column="shop_status" property="shopStatus" />
+        <result column="full_free_shipping" property="fullFreeShipping" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        shop_id, shop_name, user_id, shop_type, intro, shop_notice, shop_industry, shop_owner, mobile, tel, shop_lat, shop_lng, shop_address, province, city, area, pca_code, shop_logo, shop_photos, shop_status, full_free_shipping, create_time, update_time
+    </sql>
+
+</mapper>
