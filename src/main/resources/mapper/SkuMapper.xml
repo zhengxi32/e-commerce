@@ -27,4 +27,8 @@
         sku_id, sku_name, prod_id, prod_name, properties, price, stocks, party_code, model_id, pic, weight, volume, status, create_time, update_time, version
     </sql>
 
+    <update id="updateStocks">
+        update set stocks = stocks - #{stocks}, version = version + 1 where sku_id = #{skuId} and stocks &gt;= #{stocks}
+    </update>
+
 </mapper>

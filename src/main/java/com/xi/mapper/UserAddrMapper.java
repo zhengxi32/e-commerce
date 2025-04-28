@@ -2,6 +2,7 @@ package com.xi.mapper;
 
 import com.xi.domain.UserAddr;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.xi.domain.dto.UserAddrDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,4 +26,7 @@ public interface UserAddrMapper extends BaseMapper<UserAddr> {
     UserAddr getUserAddrByUserIdAndAddrId(@Param("userId") String userId, @Param("addrId") String addrId);
 
 
+    UserAddrDto getCommonAddr(String userId);
+
+    UserAddrDto getRecentAddr(String userId);
 }

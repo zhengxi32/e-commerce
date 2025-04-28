@@ -12,8 +12,8 @@
         <result column="prod_count" property="prodCount" />
         <result column="order_serial_id" property="orderSerialId" />
         <result column="order_serial_number" property="orderSerialNumber" />
-        <result column="total" property="total" />
-        <result column="actual_total" property="actualTotal" />
+        <result column="cost" property="cost" />
+        <result column="actual_cost" property="actualCost" />
         <result column="pay_type" property="payType" />
         <result column="remarks" property="remarks" />
         <result column="status" property="status" />
@@ -37,7 +37,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        order_item_id, shop_id, shop_name, user_id, prod_name, prod_count, order_serial_id, order_serial_number, total, actual_total, pay_type, remarks, status, dvy_id, dvy_type, dvy_flow_id, dvy_time, freight_amount, addr_order_id, product_nums, create_time, update_time, pay_time, finally_time, cancel_time, is_payed, is_delete, reduce_amount, close_type
+        order_item_id, shop_id, shop_name, user_id, prod_name, prod_count, order_serial_id, order_serial_number, cost, actual_cost, pay_type, remarks, status, dvy_id, dvy_type, dvy_flow_id, dvy_time, freight_amount, addr_order_id, product_nums, create_time, update_time, pay_time, finally_time, cancel_time, is_payed, is_delete, reduce_amount, close_type
     </sql>
 
 </mapper>

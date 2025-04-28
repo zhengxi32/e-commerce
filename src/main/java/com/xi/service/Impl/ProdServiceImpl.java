@@ -17,9 +17,5 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProdServiceImpl extends ServiceImpl<ProdMapper, Prod> implements ProdService {
 
-    @Override
-    public void updateStock(String prodId) {
-        Integer version = this.baseMapper.selectById(prodId).getVersion();
-        this.baseMapper.updateStock(prodId, version);
-    }
+
 }

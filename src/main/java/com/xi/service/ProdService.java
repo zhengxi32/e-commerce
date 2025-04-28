@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2025-04-24
  */
 public interface ProdService extends IService<Prod> {
-    void updateStock(String prodId);
+
 }

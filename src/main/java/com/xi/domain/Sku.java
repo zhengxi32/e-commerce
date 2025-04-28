@@ -3,6 +3,8 @@ package com.xi.domain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -24,13 +26,14 @@ import lombok.experimental.Accessors;
 @TableName("tb_sku")
 public class Sku implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
      * 单品ID
      */
     @TableId(value = "sku_id", type = IdType.AUTO)
-    private Long skuId;
+    private String skuId;
 
     /**
      * sku名称
@@ -40,7 +43,7 @@ public class Sku implements Serializable {
     /**
      * 商品ID
      */
-    private Long prodId;
+    private String prodId;
 
     /**
      * 商品名称

@@ -54,12 +54,14 @@ drop table if exists tb_order;
 
 create table tb_order
 (
-    order_id       bigint unsigned auto_increment comment '订单ID' primary key,
-    order_serial_id    varchar(36)                 not null comment '订单流水号',
-    total_count int(11) not null comment '商品总数',
-    total_value decimal(15, 2) default 0.00 not null comment '订单总金额',
-    create_time        datetime                    not null comment '创建时间',
-    update_time        datetime                    null comment '更新时间',
+    order_id        bigint unsigned auto_increment comment '订单ID' primary key,
+    order_serial_id varchar(36)                 not null comment '订单流水号',
+    total_count     int(11)                     not null comment '商品总数',
+    value           decimal(15, 2) default 0.00 not null comment '订单总金额',
+    actual_value    decimal(15, 2)              null comment '实际总值',
+    order_reduce    decimal(15, 2) default 0.00 null comment '订单优惠金额',
+    create_time     datetime                    not null comment '创建时间',
+    update_time     datetime                    null comment '更新时间',
     unique key uk_order_serial_id_1 (order_serial_id)
 ) comment '订单表' charset = utf8mb4;
 
@@ -69,34 +71,34 @@ drop table if exists tb_order_item;
 create table tb_order_item
 (
     order_item_id       bigint unsigned auto_increment comment '订单项ID' primary key,
-    shop_id        bigint                      null comment '店铺Id',
-    shop_name      varchar(50)                 null comment '店铺名称',
-    user_id        varchar(36)                 not null comment '订购用户ID',
-    prod_name      varchar(1000)  default ''   not null comment '产品名称',
-    prod_count     int(11)                     NOT NULL DEFAULT '1' COMMENT '产品个数',
-    order_serial_id    varchar(36)                 not null comment '订单流水号',
-    order_serial_number   varchar(50)                 not null comment '订购流水号',
-    total          decimal(15, 2) default 0.00 not null comment '总值',
-    actual_total   decimal(15, 2)              null comment '实际总值',
-    pay_type       int                         null comment '支付方式, 0：手动代付, 1：微信支付, 2：支付宝',
-    remarks        varchar(1024)               null comment '订单备注',
-    status         int            default 0    not null comment '订单状态, 1：待付款, 2：待发货, 3：待收货, 4：待评价, 5：成功, 6：失败',
-    dvy_id         bigint                      null comment '配送方式ID',
-    dvy_type       varchar(10)                 null comment '配送类型, 1：物流配送, 2：无需配送',
-    dvy_flow_id    varchar(100)   default ''   null comment '物流单号',
-    dvy_time       datetime                    null comment '发货时间',
-    freight_amount decimal(15, 2) default 0.00 null comment '订单运费',
-    addr_order_id  bigint                      null comment '用户订单地址Id',
-    product_nums   int                         null comment '订单商品总数',
-    create_time    datetime                    not null comment '订购时间',
-    update_time    datetime                    null comment '订单更新时间',
-    pay_time       datetime                    null comment '付款时间',
-    finally_time   datetime                    null comment '完成时间',
-    cancel_time    datetime                    null comment '取消时间',
-    is_payed       tinyint(1)                  null comment '是否已支付, 1：已支付, 0：未支付',
-    is_delete      int            default 0    null comment '用户订单删除状态, 0：未删除, 1：已删除',
-    reduce_amount  decimal(15, 2)              null comment '优惠总额',
-    close_type     tinyint(1)                  null comment '订单关闭原因, 1：超时未支付, 2：退款关闭, 3：买家取消, 4：已完成'
+    shop_id             bigint                      null comment '店铺Id',
+    shop_name           varchar(50)                 null comment '店铺名称',
+    user_id             varchar(36)                 not null comment '订购用户ID',
+    prod_name           varchar(1000)  default ''   not null comment '产品名称',
+    prod_count          int(11)                     NOT NULL DEFAULT '1' COMMENT '产品个数',
+    order_serial_id     varchar(36)                 not null comment '订单流水号',
+    order_serial_number varchar(50)                 not null comment '订购流水号',
+    cost               decimal(15, 2) default 0.00 not null comment '总值',
+    actual_cost        decimal(15, 2)              null comment '实际总值',
+    pay_type            int                         null comment '支付方式, 0：手动代付, 1：微信支付, 2：支付宝',
+    remarks             varchar(1024)               null comment '订单备注',
+    status              int            default 0    not null comment '订单状态, 1：待付款, 2：待发货, 3：待收货, 4：待评价, 5：成功, 6：失败',
+    dvy_id              bigint                      null comment '配送方式ID',
+    dvy_type            varchar(10)                 null comment '配送类型, 1：物流配送, 2：无需配送',
+    dvy_flow_id         varchar(100)   default ''   null comment '物流单号',
+    dvy_time            datetime                    null comment '发货时间',
+    freight_amount      decimal(15, 2) default 0.00 null comment '订单运费',
+    addr_order_id       bigint                      null comment '用户订单地址Id',
+    product_nums        int                         null comment '订单商品总数',
+    create_time         datetime                    not null comment '订购时间',
+    update_time         datetime                    null comment '订单更新时间',
+    pay_time            datetime                    null comment '付款时间',
+    finally_time        datetime                    null comment '完成时间',
+    cancel_time         datetime                    null comment '取消时间',
+    is_payed            tinyint(1)                  null comment '是否已支付, 1：已支付, 0：未支付',
+    is_delete           int            default 0    null comment '用户订单删除状态, 0：未删除, 1：已删除',
+    reduce_amount       decimal(15, 2)              null comment '优惠总额',
+    close_type          tinyint(1)                  null comment '订单关闭原因, 1：超时未支付, 2：退款关闭, 3：买家取消, 4：已完成'
 ) comment '订单项' charset = utf8mb4;
 
 drop table if exists tb_sku;
@@ -179,6 +181,7 @@ CREATE TABLE `tb_user_addr`
     `common_addr` int(1)              NOT NULL DEFAULT '0' COMMENT '是否默认地址 1是',
     `create_time` datetime            NOT NULL COMMENT '建立时间',
     `update_time` datetime            NOT NULL COMMENT '更新时间',
+    `used_time`   datetime            NOT NULL COMMENT '最后使用时间',
     `version`     int(5)              NOT NULL DEFAULT '0' COMMENT '版本号',
     PRIMARY KEY (`addr_id`)
 ) ENGINE = InnoDB

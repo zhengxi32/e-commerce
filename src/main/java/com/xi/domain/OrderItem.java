@@ -3,6 +3,8 @@ package com.xi.domain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -23,19 +25,20 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @TableName("tb_order_item")
 public class OrderItem implements Serializable {
-
+    
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
      * 订单项ID
      */
     @TableId(value = "order_item_id", type = IdType.AUTO)
-    private Long orderItemId;
+    private String orderItemId;
 
     /**
      * 店铺Id
      */
-    private Long shopId;
+    private String shopId;
 
     /**
      * 店铺名称
@@ -55,7 +58,7 @@ public class OrderItem implements Serializable {
     /**
      * 产品个数
      */
-    private Integer prodCount;
+    private String prodCount;
 
     /**
      * 订单流水号
@@ -70,12 +73,12 @@ public class OrderItem implements Serializable {
     /**
      * 总值
      */
-    private BigDecimal total;
+    private BigDecimal cost;
 
     /**
      * 实际总值
      */
-    private BigDecimal actualTotal;
+    private BigDecimal actualCost;
 
     /**
      * 支付方式, 0：手动代付, 1：微信支付, 2：支付宝
@@ -95,7 +98,7 @@ public class OrderItem implements Serializable {
     /**
      * 配送方式ID
      */
-    private Long dvyId;
+    private String dvyId;
 
     /**
      * 配送类型, 1：物流配送, 2：无需配送
@@ -120,7 +123,7 @@ public class OrderItem implements Serializable {
     /**
      * 用户订单地址Id
      */
-    private Long addrOrderId;
+    private String addrOrderId;
 
     /**
      * 订单商品总数

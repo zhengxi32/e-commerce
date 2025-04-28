@@ -21,7 +21,7 @@ public class ProdMessage {
     /**
      * 店铺ID
      */
-    private Long shopId;
+    private String shopId;
 
     /**
      * 现价
@@ -51,7 +51,7 @@ public class ProdMessage {
     /**
      * 商品分类
      */
-    private Long categoryId;
+    private String categoryId;
 
     /**
      * 销量

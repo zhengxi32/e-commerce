@@ -35,7 +35,7 @@ public class ProdConsumerServiceImpl implements ProdConsumerService {
     @Resource
     private KafkaTemplate<String, String> kafkaTemplate;
 
-    @KafkaListener(topics = "topic-prod", groupId = "daily-prod", concurrency = "1")
+    @KafkaListener(topics = "topic-prod", groupId = "prod", concurrency = "1")
     public void listenStockChange(ConsumerRecord<String, String> record, Acknowledgment ack) {
         try {
             CanalMessage<ProdMessage> message = JSONUtil.fromJson(record.value(), new TypeReference<CanalMessage<ProdMessage>>() {});
@@ -47,7 +47,6 @@ public class ProdConsumerServiceImpl implements ProdConsumerService {
 
             // 手动提交偏移量
             ack.acknowledge();
-
 
         } catch (Exception e) {
             log.error("消息消费失败，topic = {}, offset = {}", record.topic(), record.offset(), e);

@@ -15,6 +15,8 @@ public enum ResponseCodeEnum implements BaseException {
     // ----------- 业务异常状态码 -----------
     VERIFICATION_CODE_SEND_FREQUENTLY("AUTH-20000", "请求太频繁，请3分钟后再试"),
     VERIFICATION_CODE_ERROR("AUTH-20001", "验证码错误"),
+    ORDER_EXPIRED("AUTH-20002", "订单已过期"),
+    STOCKS_NOT_ENOUGH("AUTH-20003", "库存不足"),
     ;
 
     // 异常码

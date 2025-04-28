@@ -1,29 +1,14 @@
-package com.xi.domain;
+package com.xi.domain.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
-/**
- * <p>
- * 用户配送地址
- * </p>
- *
- * @author 郑西
- * @since 2025-04-27
- */
-@Getter
-@Setter
-@Accessors(chain = true)
-@TableName("tb_user_addr")
-public class UserAddr implements Serializable {
+@Data
+public class UserAddrDto implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -84,23 +69,4 @@ public class UserAddr implements Serializable {
      */
     private Integer commonAddr;
 
-    /**
-     * 建立时间
-     */
-    private LocalDateTime createTime;
-
-    /**
-     * 更新时间
-     */
-    private LocalDateTime updateTime;
-
-    /**
-     * 最后使用时间
-     */
-    private LocalDateTime usedTime;
-
-    /**
-     * 版本号
-     */
-    private Integer version;
 }

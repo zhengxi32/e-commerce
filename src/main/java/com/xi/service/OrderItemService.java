@@ -2,6 +2,7 @@ package com.xi.service;
 
 import com.xi.domain.OrderItem;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xi.domain.dto.ShopOrderDto;
 
 /**
  * <p>
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface OrderItemService extends IService<OrderItem> {
 
+    void createOrderItem(String userId, String userAddrOrderId, ShopOrderDto shopOrderDto);
 }

@@ -15,4 +15,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface SkuMapper extends BaseMapper<Sku> {
 
+    Integer updateStocks(String skuId, String stocks);
+
 }

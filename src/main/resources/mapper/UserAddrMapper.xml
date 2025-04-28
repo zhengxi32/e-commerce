@@ -17,16 +17,29 @@
         <result column="common_addr" property="commonAddr" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
+        <result column="used_time" property="usedTime" />
         <result column="version" property="version" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        addr_id, user_id, receiver, province, city, area, post_code, addr, mobile, status, common_addr, create_time, update_time, version
+        addr_id, user_id, receiver, province, city, area, post_code, addr, mobile, status, common_addr, create_time, update_time, usedTime, version
     </sql>
-    <select id="getUserAddrByUserIdAndAddrId" resultType="com.xi.domain.UserAddr">
+
+    <select id="getUserAddrByUserIdAndAddrId" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"></include>
         from user_addr where user_id = #{userId} and addr_id = #{addrId}
     </select>
+
+    <select id="getCommonAddr" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>
+        from user_addr where user_id = #{userId} and common_addr = 1
+    </select>
+
+    <select id="getRecentAddr" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>
+        from user_addr where user_id = #{userId} order by used_time desc limit 1
+    </select>
+
 
 </mapper>

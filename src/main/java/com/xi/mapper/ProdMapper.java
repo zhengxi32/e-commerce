@@ -17,8 +17,10 @@ import java.util.List;
  */
 @Mapper
 public interface ProdMapper extends BaseMapper<Prod> {
-    boolean updateStock(@Param("prodId") String prodId, @Param("version") Integer version);
 
     List<Prod> selectList();
 
+    Integer updateStocks(@Param("prodId") String prodId, @Param("totalStocks") String totalStocks);
+
 }
+
