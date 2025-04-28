@@ -25,4 +25,6 @@
         user_id, nick_name, real_name, user_mail, login_password, pay_password, user_mobile, register_time, modify_time, sex, birth_date, pic, status, score
     </sql>
 
+
+
 </mapper>

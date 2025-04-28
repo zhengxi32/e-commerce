@@ -54,13 +54,28 @@ drop table if exists tb_order;
 
 create table tb_order
 (
-    order_id       bigint unsigned auto_increment comment '订单ID'
-        primary key,
+    order_id       bigint unsigned auto_increment comment '订单ID' primary key,
+    order_serial_id    varchar(36)                 not null comment '订单流水号',
+    total_count int(11) not null comment '商品总数',
+    total_value decimal(15, 2) default 0.00 not null comment '订单总金额',
+    create_time        datetime                    not null comment '创建时间',
+    update_time        datetime                    null comment '更新时间',
+    unique key uk_order_serial_id_1 (order_serial_id)
+) comment '订单表' charset = utf8mb4;
+
+
+drop table if exists tb_order_item;
+
+create table tb_order_item
+(
+    order_item_id       bigint unsigned auto_increment comment '订单项ID' primary key,
     shop_id        bigint                      null comment '店铺Id',
     shop_name      varchar(50)                 null comment '店铺名称',
     user_id        varchar(36)                 not null comment '订购用户ID',
-    prod_name      varchar(1000)  default ''   not null comment '产品名称, 多个产品将会以逗号隔开',
-    order_number   varchar(50)                 not null comment '订购流水号',
+    prod_name      varchar(1000)  default ''   not null comment '产品名称',
+    prod_count     int(11)                     NOT NULL DEFAULT '1' COMMENT '产品个数',
+    order_serial_id    varchar(36)                 not null comment '订单流水号',
+    order_serial_number   varchar(50)                 not null comment '订购流水号',
     total          decimal(15, 2) default 0.00 not null comment '总值',
     actual_total   decimal(15, 2)              null comment '实际总值',
     pay_type       int                         null comment '支付方式, 0：手动代付, 1：微信支付, 2：支付宝',
@@ -81,10 +96,8 @@ create table tb_order
     is_payed       tinyint(1)                  null comment '是否已支付, 1：已支付, 0：未支付',
     is_delete      int            default 0    null comment '用户订单删除状态, 0：未删除, 1：已删除',
     reduce_amount  decimal(15, 2)              null comment '优惠总额',
-    close_type     tinyint(1)                  null comment '订单关闭原因, 1：超时未支付, 2：退款关闭, 3：买家取消, 4：已完成',
-    constraint uk_user_id_1
-        unique (user_id)
-) comment '订单表' charset = utf8mb4;
+    close_type     tinyint(1)                  null comment '订单关闭原因, 1：超时未支付, 2：退款关闭, 3：买家取消, 4：已完成'
+) comment '订单项' charset = utf8mb4;
 
 drop table if exists tb_sku;
 

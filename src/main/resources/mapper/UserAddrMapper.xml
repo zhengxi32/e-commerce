@@ -24,5 +24,9 @@
     <sql id="Base_Column_List">
         addr_id, user_id, receiver, province, city, area, post_code, addr, mobile, status, common_addr, create_time, update_time, version
     </sql>
+    <select id="getUserAddrByUserIdAndAddrId" resultType="com.xi.domain.UserAddr">
+        select <include refid="Base_Column_List"></include>
+        from user_addr where user_id = #{userId} and addr_id = #{addrId}
+    </select>
 
 </mapper>

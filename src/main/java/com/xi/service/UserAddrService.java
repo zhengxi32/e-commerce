@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface UserAddrService extends IService<UserAddr> {
 
+
+    UserAddr getUserAddrByUserId(String userId, String addrId);
 }

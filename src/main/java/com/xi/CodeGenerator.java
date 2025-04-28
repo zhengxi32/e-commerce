@@ -12,7 +12,7 @@ import java.util.Collections;
 public class CodeGenerator {
 
     public static void main(String[] args) {
-        Generation("commerce", "tb_sku");
+        Generation("commerce", "tb_order", "tb_order_item");
     }
 
     public static void Generation(String databaseName, String... tableName) {

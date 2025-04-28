@@ -1,9 +1,10 @@
 package com.xi.service.Impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xi.domain.UserAddr;
 import com.xi.mapper.UserAddrMapper;
 import com.xi.service.UserAddrService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,5 +17,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserAddrServiceImpl extends ServiceImpl<UserAddrMapper, UserAddr> implements UserAddrService {
+
+    @Override
+    @Cacheable(cacheNames = "UserAddrDto", key = "#userId + ':' + #addrId")
+    public UserAddr getUserAddrByUserId(String userId, String addrId) {
+        return this.baseMapper.getUserAddrByUserIdAndAddrId(userId, addrId);
+    }
 
 }

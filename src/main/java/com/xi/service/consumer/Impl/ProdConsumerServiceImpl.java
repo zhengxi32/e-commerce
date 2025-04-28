@@ -18,6 +18,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -46,6 +47,7 @@ public class ProdConsumerServiceImpl implements ProdConsumerService {
 
             // 手动提交偏移量
             ack.acknowledge();
+
 
         } catch (Exception e) {
             log.error("消息消费失败，topic = {}, offset = {}", record.topic(), record.offset(), e);
