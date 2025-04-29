@@ -7,7 +7,6 @@ import com.xi.domain.UserAddrOrderDo;
 import com.xi.domain.dto.BasketDto;
 import com.xi.domain.dto.UserAddrDto;
 import com.xi.domain.param.OrderParam;
-import com.xi.service.OrderItemService;
 import com.xi.service.OrderService;
 import com.xi.service.UserAddrOrderService;
 import com.xi.service.UserAddrService;
@@ -31,7 +30,7 @@ public class OrderListenerImpl implements OrderListener {
     private UserAddrOrderService userAddrOrderService;
 
     @Resource
-    private OrderItemService orderItemService;
+    private OrderService orderService;
 
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
     @Override
@@ -50,7 +49,7 @@ public class OrderListenerImpl implements OrderListener {
 
                 // 生成订单项
                 basketDto.setUserId("userId");
-                orderItemService.createOrderItemByCart(basketDto);
+                orderService.createOrderByCart(basketDto);
             }
         }
     }

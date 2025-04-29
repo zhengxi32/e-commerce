@@ -77,22 +77,6 @@ drop table if exists tb_order;
 
 create table tb_order
 (
-    order_id        bigint unsigned auto_increment comment '订单ID' primary key,
-    order_serial_id varchar(36)                 not null comment '订单流水号',
-    total_count     int(11)                     not null comment '商品总数',
-    value           decimal(15, 2) default 0.00 not null comment '订单总金额',
-    actual_value    decimal(15, 2)              null comment '实际总值',
-    order_reduce    decimal(15, 2) default 0.00 null comment '订单优惠金额',
-    create_time     datetime                    not null comment '创建时间',
-    update_time     datetime                    null comment '更新时间',
-    unique key uk_order_serial_id_1 (order_serial_id)
-) comment '订单表' charset = utf8mb4;
-
-
-drop table if exists tb_order_item;
-
-create table tb_order_item
-(
     order_item_id       bigint unsigned auto_increment comment '订单项ID' primary key,
     shop_id             bigint                      null comment '店铺Id',
     shop_name           varchar(50)                 null comment '店铺名称',

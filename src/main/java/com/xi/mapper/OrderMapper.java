@@ -1,6 +1,6 @@
 package com.xi.mapper;
 
-import com.xi.domain.Order;
+import com.xi.domain.OrderDo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,9 +10,9 @@ import org.apache.ibatis.annotations.Mapper;
  * </p>
  *
  * @author 郑西
- * @since 2025-04-28
+ * @since 2025-04-29
  */
 @Mapper
-public interface OrderMapper extends BaseMapper<Order> {
+public interface OrderMapper extends BaseMapper<OrderDo> {
 
 }
