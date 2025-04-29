@@ -1,6 +1,6 @@
 package com.xi.mapper;
 
-import com.xi.domain.UserAddr;
+import com.xi.domain.UserAddrDo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xi.domain.dto.UserAddrDto;
 import org.apache.ibatis.annotations.Mapper;
@@ -15,7 +15,7 @@ import org.apache.ibatis.annotations.Param;
  * @since 2025-04-27
  */
 @Mapper
-public interface UserAddrMapper extends BaseMapper<UserAddr> {
+public interface UserAddrMapper extends BaseMapper<UserAddrDo> {
 
     /**
      * 根据用户ID和地址ID获取地址
@@ -23,7 +23,7 @@ public interface UserAddrMapper extends BaseMapper<UserAddr> {
      * @param addrId 地址ID
      * @return 地址
      */
-    UserAddr getUserAddrByUserIdAndAddrId(@Param("userId") String userId, @Param("addrId") String addrId);
+    UserAddrDo getUserAddrByUserIdAndAddrId(@Param("userId") String userId, @Param("addrId") String addrId);
 
 
     UserAddrDto getCommonAddr(String userId);

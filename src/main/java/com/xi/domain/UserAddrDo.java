@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 用户订单配送地址
+ * 用户配送地址
  * </p>
  *
  * @author 郑西
@@ -22,8 +22,8 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-@TableName("tb_user_addr_order")
-public class UserAddrOrder implements Serializable {
+@TableName("tb_user_addr")
+public class UserAddrDo implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -31,12 +31,7 @@ public class UserAddrOrder implements Serializable {
     /**
      * ID
      */
-    @TableId(value = "addr_order_id", type = IdType.AUTO)
-    private String addrOrderId;
-
-    /**
-     * 地址ID
-     */
+    @TableId(value = "addr_id", type = IdType.AUTO)
     private String addrId;
 
     /**
@@ -65,14 +60,14 @@ public class UserAddrOrder implements Serializable {
     private String area;
 
     /**
-     * 地址
-     */
-    private String addr;
-
-    /**
      * 邮编
      */
     private String postCode;
+
+    /**
+     * 地址
+     */
+    private String addr;
 
     /**
      * 手机
@@ -80,9 +75,29 @@ public class UserAddrOrder implements Serializable {
     private String mobile;
 
     /**
+     * 状态, 1正常, 0无效
+     */
+    private Integer status;
+
+    /**
+     * 是否默认地址 1是
+     */
+    private Integer commonAddr;
+
+    /**
      * 建立时间
      */
     private LocalDateTime createTime;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updateTime;
+
+    /**
+     * 最后使用时间
+     */
+    private LocalDateTime usedTime;
 
     /**
      * 版本号

@@ -35,7 +35,7 @@ public class ProdConsumerServiceImpl implements ProdConsumerService {
     @Resource
     private KafkaTemplate<String, String> kafkaTemplate;
 
-    @KafkaListener(topics = "topic-prod", groupId = "prod", concurrency = "1")
+//    @KafkaListener(topics = "topic-prod", groupId = "prod", concurrency = "1")
     public void listenStockChange(ConsumerRecord<String, String> record, Acknowledgment ack) {
         try {
             CanalMessage<ProdMessage> message = JSONUtil.fromJson(record.value(), new TypeReference<CanalMessage<ProdMessage>>() {});

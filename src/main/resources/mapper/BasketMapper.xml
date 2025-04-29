@@ -3,17 +3,27 @@
 <mapper namespace="com.xi.mapper.BasketMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.xi.domain.Basket">
+    <resultMap id="BaseResultMap" type="com.xi.domain.BasketDo">
         <id column="basket_id" property="basketId" />
         <result column="shop_id" property="shopId" />
         <result column="prod_id" property="prodId" />
         <result column="sku_id" property="skuId" />
         <result column="user_id" property="userId" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        basket_id, shop_id, prod_id, sku_id, user_id
+        basket_id, shop_id, prod_id, sku_id, user_id, status, create_time, update_time
     </sql>
+
+    <select id="getBasketListByUserId" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>
+        from tb_basekt
+        where user_id = #{userId}
+        order by create_time desc
+    </select>
 
 </mapper>

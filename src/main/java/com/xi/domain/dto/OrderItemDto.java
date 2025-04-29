@@ -38,12 +38,12 @@ public class OrderItemDto implements Serializable {
     /**
      * 商品数量
      */
-    private String totalStocks;
+    private Integer totalStocks;
 
     /**
      * Sku数量
      */
-    private String stocks;
+    private Integer stocks;
 
     /**
      * 商品备注

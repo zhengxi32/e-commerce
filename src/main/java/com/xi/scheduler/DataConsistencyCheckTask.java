@@ -1,6 +1,6 @@
 package com.xi.scheduler;
 
-import com.xi.domain.Prod;
+import com.xi.domain.ProdDo;
 import com.xi.mapper.ProdMapper;
 import com.xi.util.RedisUtil;
 import jakarta.annotation.Resource;
@@ -27,7 +27,7 @@ public class DataConsistencyCheckTask {
 
     @Scheduled(fixedRate = 300000)
     public void checkStock() {
-        List<Prod> items = prodMapper.selectList();
+        List<ProdDo> items = prodMapper.selectList();
         items.forEach(item -> {
             String versionKey = RedisUtil.getVersionKey("tb_prod", item.getProdId());
             RBucket<Integer> bucket = redissonClient.getBucket(versionKey);

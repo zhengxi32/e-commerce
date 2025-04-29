@@ -1,12 +1,9 @@
 package com.xi.controller;
 
-import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xi.common.Response;
-import com.xi.domain.OrderItem;
-import com.xi.domain.UserAddr;
 import com.xi.domain.dto.OrderItemDto;
 import com.xi.domain.dto.ShopOrderDto;
 import com.xi.domain.param.OrderItemParam;
@@ -14,10 +11,12 @@ import com.xi.domain.param.OrderParam;
 import com.xi.domain.param.SubmitOrderParam;
 import com.xi.enums.ResponseCodeEnum;
 import com.xi.exception.BizException;
+import com.xi.service.BasketService;
 import com.xi.service.OrderService;
 import com.xi.service.UserAddrService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,8 +41,11 @@ public class OrderController {
     @Resource
     private OrderService orderService;
 
-    @PostMapping
-    public Response<ShopOrderDto> createOrder(OrderParam orderParam) {
+    @Resource
+    private BasketService basketService;
+
+    @PostMapping("/createOrder")
+    public Response<ShopOrderDto> createOrder(@RequestBody OrderParam orderParam) {
         // 获取用户信息
         String userId = "";
 
@@ -58,8 +60,8 @@ public class OrderController {
         return Response.success(shopOrderDto);
     }
 
-    @PostMapping
-    public Response<Void> submitOrder(SubmitOrderParam submitOrderParam) {
+    @PostMapping("/submitOrder")
+    public Response<Void> submitOrder(@RequestBody SubmitOrderParam submitOrderParam) {
         String userId = "";
 
         // 判断订单是否过期
@@ -80,9 +82,12 @@ public class OrderController {
         return Response.success();
     }
 
-    @PostMapping
-    public Response<Void> createBasketOrder(OrderParam orderParam) {
-        // 组装各店铺订单
+    @PostMapping("/createBasketOrder")
+    public Response<Void> createBasketOrder(@RequestBody OrderParam orderParam) {
+        String userId = "";
+
+
+
 
         // 构建返回体
 
@@ -90,11 +95,11 @@ public class OrderController {
         return Response.success();
     }
 
-    @PostMapping
-    public Response<Void> submitBasketOrder(OrderParam orderParam) {
-        // 判断订单是否过期
+    @PostMapping("/submitBasketOrder")
+    public Response<Void> submitBasketOrder(@RequestBody OrderParam orderParam) {
+        String userId = "";
 
-        // 判断商品是否下架
+        orderService.submitBasketOrder(orderParam.getBasketDtoList(), userId);
 
         // 检查Redis库存 （库存不足返回）
 

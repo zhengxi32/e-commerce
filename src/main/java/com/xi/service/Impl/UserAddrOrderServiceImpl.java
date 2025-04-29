@@ -1,6 +1,6 @@
 package com.xi.service.Impl;
 
-import com.xi.domain.UserAddrOrder;
+import com.xi.domain.UserAddrOrderDo;
 import com.xi.mapper.UserAddrOrderMapper;
 import com.xi.service.UserAddrOrderService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2025-04-27
  */
 @Service
-public class UserAddrOrderServiceImpl extends ServiceImpl<UserAddrOrderMapper, UserAddrOrder> implements UserAddrOrderService {
+public class UserAddrOrderServiceImpl extends ServiceImpl<UserAddrOrderMapper, UserAddrOrderDo> implements UserAddrOrderService {
 
 }

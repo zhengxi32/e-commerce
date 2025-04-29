@@ -62,7 +62,7 @@ public class UserAddrDto implements Serializable {
     /**
      * 状态, 1正常, 0无效
      */
-    private Integer status;
+    private String status;
 
     /**
      * 是否默认地址 1是

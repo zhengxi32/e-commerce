@@ -3,8 +3,6 @@ package com.xi.domain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-
-import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -24,9 +22,8 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @TableName("tb_order_item")
-public class OrderItem implements Serializable {
-    
-    @Serial
+public class OrderItemDo implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -58,7 +55,7 @@ public class OrderItem implements Serializable {
     /**
      * 产品个数
      */
-    private String prodCount;
+    private Integer prodCount;
 
     /**
      * 订单流水号
@@ -98,7 +95,7 @@ public class OrderItem implements Serializable {
     /**
      * 配送方式ID
      */
-    private String dvyId;
+    private Long dvyId;
 
     /**
      * 配送类型, 1：物流配送, 2：无需配送

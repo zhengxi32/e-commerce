@@ -3,7 +3,7 @@
 <mapper namespace="com.xi.mapper.SkuMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.xi.domain.Sku">
+    <resultMap id="BaseResultMap" type="com.xi.domain.SkuDo">
         <id column="sku_id" property="skuId" />
         <result column="sku_name" property="skuName" />
         <result column="prod_id" property="prodId" />
@@ -28,7 +28,22 @@
     </sql>
 
     <update id="updateStocks">
-        update set stocks = stocks - #{stocks}, version = version + 1 where sku_id = #{skuId} and stocks &gt;= #{stocks}
+        update tb_sku set stocks = stocks - #{stocks}, version = version + 1 where sku_id = #{skuId} and stocks &gt;= #{stocks}
     </update>
+
+    <update id="updateStocksLock">
+        update tb_sku set stocks = stocks - #{stocks}, version = version + 1 where sku_id = #{skuId} and stocks &gt;= #{stocks} and version = #{version}
+    </update>
+
+    <select id="getSkuDoBySkuId" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>
+        from tb_sku where sku_id = #{skuId}
+    </select>
+
+    <select id="getStocksAndVersionByProdId" resultType="com.xi.domain.dto.SkuDto">
+        select skuId, stocks, version
+        from tb_sku where prod_id = #{prodId}
+    </select>
+
 
 </mapper>

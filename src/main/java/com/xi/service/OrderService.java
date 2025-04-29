@@ -2,9 +2,12 @@ package com.xi.service;
 
 import com.xi.domain.Order;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xi.domain.dto.BasketDto;
 import com.xi.domain.dto.ShopCartDto;
 import com.xi.domain.dto.ShopOrderDto;
 import com.xi.domain.param.OrderParam;
+
+import java.util.List;
 
 /**
  * <p>
@@ -36,8 +39,9 @@ public interface OrderService extends IService<Order> {
     /**
      * 单个商品下单
      * @param userId 用户ID
-     *
-     * @param shopCartDto 店铺维度商品信息
+     * @param shopOrderDto 订单维度商品信息
      */
     void submitOrder(String userId, ShopOrderDto shopOrderDto);
+
+    void submitBasketOrder(List<BasketDto> basketDtoList, String userId);
 }

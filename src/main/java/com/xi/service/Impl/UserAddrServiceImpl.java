@@ -2,7 +2,8 @@ package com.xi.service.Impl;
 
 import cn.hutool.core.util.ObjUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xi.domain.UserAddr;
+import com.xi.convert.UserAddrConvert;
+import com.xi.domain.UserAddrDo;
 import com.xi.domain.dto.UserAddrDto;
 import com.xi.mapper.UserAddrMapper;
 import com.xi.service.UserAddrService;
@@ -18,12 +19,13 @@ import org.springframework.stereotype.Service;
  * @since 2025-04-27
  */
 @Service
-public class UserAddrServiceImpl extends ServiceImpl<UserAddrMapper, UserAddr> implements UserAddrService {
+public class UserAddrServiceImpl extends ServiceImpl<UserAddrMapper, UserAddrDo> implements UserAddrService {
 
     @Override
     @Cacheable(cacheNames = "UserAddr", key = "#userId + ':' + #addrId")
-    public UserAddr getUserAddrByUserIdAndAddrId(String userId, String addrId) {
-        return this.baseMapper.getUserAddrByUserIdAndAddrId(userId, addrId);
+    public UserAddrDto getUserAddrDtoByUserIdAndAddrId(String userId, String addrId) {
+        UserAddrDo userAddrDo = this.baseMapper.getUserAddrByUserIdAndAddrId(userId, addrId);
+        return UserAddrConvert.INSTANCE.UserAddrDoToDto(userAddrDo);
     }
 
     @Override

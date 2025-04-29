@@ -1,6 +1,6 @@
 package com.xi.mapper;
 
-import com.xi.domain.Shop;
+import com.xi.domain.ShopDo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,6 +13,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2025-04-27
  */
 @Mapper
-public interface ShopMapper extends BaseMapper<Shop> {
+public interface ShopMapper extends BaseMapper<ShopDo> {
 
+    ShopDo getShopDtoByShopId(String shopId);
 }

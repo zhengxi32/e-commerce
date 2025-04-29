@@ -1,6 +1,6 @@
 package com.xi.service;
 
-import com.xi.domain.UserAddr;
+import com.xi.domain.UserAddrDo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xi.domain.dto.UserAddrDto;
 
@@ -12,7 +12,7 @@ import com.xi.domain.dto.UserAddrDto;
  * @author 郑西
  * @since 2025-04-27
  */
-public interface UserAddrService extends IService<UserAddr> {
+public interface UserAddrService extends IService<UserAddrDo> {
 
     /**
      * 根据用户ID和地址ID查询地址
@@ -20,7 +20,7 @@ public interface UserAddrService extends IService<UserAddr> {
      * @param addrId 地址ID
      * @return 地址
      */
-    UserAddr getUserAddrByUserIdAndAddrId(String userId, String addrId);
+    UserAddrDto getUserAddrDtoByUserIdAndAddrId(String userId, String addrId);
 
     /**
      * 查询默认地址 无默认地址则返回最后使用地址

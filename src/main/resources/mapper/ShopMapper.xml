@@ -3,7 +3,7 @@
 <mapper namespace="com.xi.mapper.ShopMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.xi.domain.Shop">
+    <resultMap id="BaseResultMap" type="com.xi.domain.ShopDo">
         <id column="shop_id" property="shopId" />
         <result column="shop_name" property="shopName" />
         <result column="user_id" property="userId" />
@@ -33,5 +33,11 @@
     <sql id="Base_Column_List">
         shop_id, shop_name, user_id, shop_type, intro, shop_notice, shop_industry, shop_owner, mobile, tel, shop_lat, shop_lng, shop_address, province, city, area, pca_code, shop_logo, shop_photos, shop_status, full_free_shipping, create_time, update_time
     </sql>
+
+    <select id="getShopDtoByShopId" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from tb_shop
+        where shop_id = #{shopId} and shop_status = 1
+    </select>
 
 </mapper>

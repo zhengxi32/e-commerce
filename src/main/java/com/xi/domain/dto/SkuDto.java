@@ -1,30 +1,16 @@
-package com.xi.domain;
+package com.xi.domain.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
-/**
- * <p>
- * 商品规格表
- * </p>
- *
- * @author 郑西
- * @since 2025-04-27
- */
-@Getter
-@Setter
-@Accessors(chain = true)
-@TableName("tb_sku")
-public class Sku implements Serializable {
+@Data
+public class SkuDto implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -109,4 +95,5 @@ public class Sku implements Serializable {
      * 版本号
      */
     private Integer version;
+
 }

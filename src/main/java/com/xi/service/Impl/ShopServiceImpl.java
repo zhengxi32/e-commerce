@@ -1,9 +1,12 @@
 package com.xi.service.Impl;
 
-import com.xi.domain.Shop;
+import com.xi.convert.ShopConvert;
+import com.xi.domain.ShopDo;
+import com.xi.domain.dto.ShopDto;
 import com.xi.mapper.ShopMapper;
 import com.xi.service.ShopService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +18,12 @@ import org.springframework.stereotype.Service;
  * @since 2025-04-27
  */
 @Service
-public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements ShopService {
+public class ShopServiceImpl extends ServiceImpl<ShopMapper, ShopDo> implements ShopService {
 
+    @Override
+    @Cacheable(value = "shopDto", key = "#shopId")
+    public ShopDto getShopDtoByShopId(String shopId) {
+        ShopDo shopDo = this.baseMapper.getShopDtoByShopId(shopId);
+        return ShopConvert.INSTANCE.ShopDoToShopDto(shopDo);
+    }
 }

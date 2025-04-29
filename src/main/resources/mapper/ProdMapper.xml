@@ -3,7 +3,7 @@
 <mapper namespace="com.xi.mapper.ProdMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.xi.domain.Prod">
+    <resultMap id="BaseResultMap" type="com.xi.domain.ProdDo">
         <id column="prod_id" property="prodId" />
         <result column="prod_name" property="prodName" />
         <result column="shop_id" property="shopId" />
@@ -30,10 +30,26 @@
         update tb_prod set total_stocks = total_stocks - #{totalStocks}, version = version + 1 where prod_id = #{prodId} and total_stocks &gt;= #{totalStocks}
     </update>
 
+    <update id="updateStocksLock">
+        update tb_prod set total_stocks = total_stocks - #{totalStocks}, version = version + 1 where prod_id = #{prodId} and total_stocks &gt;= #{totalStocks} and version = #{version}
+    </update>
+
     <select id="selectList" resultMap="BaseResultMap">
         select *
         from tb_prod
         where status = 1
+    </select>
+
+    <select id="getProdDtoByProdId" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>
+        from tb_prod
+        where prod_id = #{prodId}
+    </select>
+
+    <select id="getTotalStocksAndVersionByProdId" resultMap="BaseResultMap">
+        select total_stocks, version
+        from tb_prod
+        where prod_id = #{prodId}
     </select>
 
 </mapper>

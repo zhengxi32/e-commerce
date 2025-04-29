@@ -1,8 +1,14 @@
 package com.xi.mapper;
 
-import com.xi.domain.Sku;
+import com.xi.domain.SkuDo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.xi.domain.dto.SkuDto;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -13,8 +19,14 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2025-04-27
  */
 @Mapper
-public interface SkuMapper extends BaseMapper<Sku> {
+public interface SkuMapper extends BaseMapper<SkuDo> {
 
-    Integer updateStocks(String skuId, String stocks);
+    Integer updateStocks(@Param("skuId") String skuId, @Param("stocks") Integer stocks);
 
+    SkuDo getSkuDoBySkuId(@Param("skuId") String skuId);
+
+    Integer updateStocksLock(@Param("skuId") String skuId, @Param("stocks") Integer stocks, @Param("version") Integer version);
+
+    @MapKey("skuId")
+    Map<String, SkuDto> getStocksAndVersionByProdId(String prodId);
 }

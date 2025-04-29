@@ -1,5 +1,6 @@
 package com.xi.domain.param;
 
+import com.xi.domain.dto.BasketDto;
 import lombok.Data;
 
 import java.util.List;
@@ -16,14 +17,29 @@ public class OrderParam {
     private String prodId;
 
     /**
+     * 商品名字
+     */
+    private String prodName;
+
+    /**
      * SkuID
      */
     private String skuId;
 
     /**
+     * Sku名字
+     */
+    private String skuName;
+
+    /**
      * 店铺ID
      */
     private String shopId;
+
+    /**
+     * 店铺名字
+     */
+    private String shopName;
 
     /**
      * 地址ID
@@ -41,9 +57,9 @@ public class OrderParam {
     private Integer prodCount;
 
     /**
-     * 购物车ID列表
+     * 购物车列表
      */
-    private List<String> basketIdList;
+    private List<BasketDto> basketDtoList;
 
     /**
      * 地址ID列表

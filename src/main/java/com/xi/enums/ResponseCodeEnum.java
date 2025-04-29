@@ -17,6 +17,7 @@ public enum ResponseCodeEnum implements BaseException {
     VERIFICATION_CODE_ERROR("AUTH-20001", "验证码错误"),
     ORDER_EXPIRED("AUTH-20002", "订单已过期"),
     STOCKS_NOT_ENOUGH("AUTH-20003", "库存不足"),
+    PROD_NOT_EXIST("AUTH-20004", "商品不存在"),
     ;
 
     // 异常码

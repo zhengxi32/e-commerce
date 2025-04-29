@@ -1,6 +1,5 @@
 package com.xi.domain.dto;
 
-import com.xi.domain.UserAddr;
 import lombok.Data;
 
 import java.io.Serial;

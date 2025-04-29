@@ -30,7 +30,7 @@ public class Order implements Serializable {
      * 订单ID
      */
     @TableId(value = "order_id", type = IdType.AUTO)
-    private String orderId;
+    private Long orderId;
 
     /**
      * 订单流水号
@@ -40,7 +40,7 @@ public class Order implements Serializable {
     /**
      * 商品总数
      */
-    private String totalCount;
+    private Integer totalCount;
 
     /**
      * 订单总金额
@@ -53,7 +53,7 @@ public class Order implements Serializable {
     private BigDecimal actualValue;
 
     /**
-     * 优惠金额
+     * 订单优惠金额
      */
     private BigDecimal orderReduce;
 

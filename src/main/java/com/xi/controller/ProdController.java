@@ -21,13 +21,5 @@ import java.security.NoSuchProviderException;
 @RequestMapping("/prod")
 public class ProdController {
 
-    @Resource
-    private ProdService prodService;
-
-    @PostMapping("/updateStock")
-    public String updateStock() {
-        prodService.updateStock("1");
-        return "aaa";
-    }
 
 }

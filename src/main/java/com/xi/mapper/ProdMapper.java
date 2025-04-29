@@ -1,7 +1,8 @@
 package com.xi.mapper;
 
-import com.xi.domain.Prod;
+import com.xi.domain.ProdDo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.xi.domain.dto.ProdDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -16,11 +17,16 @@ import java.util.List;
  * @since 2025-04-24
  */
 @Mapper
-public interface ProdMapper extends BaseMapper<Prod> {
+public interface ProdMapper extends BaseMapper<ProdDo> {
 
-    List<Prod> selectList();
+    List<ProdDo> selectList();
 
-    Integer updateStocks(@Param("prodId") String prodId, @Param("totalStocks") String totalStocks);
+    Integer updateStocks(@Param("prodId") String prodId, @Param("totalStocks") Integer totalStocks);
 
+    ProdDo getProdDtoByProdId(@Param("prodId") String prodId);
+
+    Integer updateStocksLock(@Param("prodId") String prodId, @Param("totalStocks") Integer totalStocks, @Param("version") Integer version);
+
+    ProdDo getTotalStocksAndVersionByProdId(@Param("prodId") String prodId);
 }
 
