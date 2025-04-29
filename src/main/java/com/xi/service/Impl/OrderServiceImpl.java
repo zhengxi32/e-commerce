@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.xi.constant.SystemConstant;
 import com.xi.domain.Order;
 import com.xi.domain.UserAddrOrderDo;
@@ -126,6 +127,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void submitOrder(String userId, ShopOrderDto shopOrderDto) {
+
         // 获取商品信息
         OrderItemDto orderItemDto = shopOrderDto.getShopCartDto().getOrderItemDto();
 
@@ -158,9 +160,23 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         // CDC异步更新Redis
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public void SubmitOrder(OrderParam orderParam) {
+        // 乐观锁库存扣减
+        ProdDto prodDto = prodService.getStocksAndVersion(orderParam.getProdId());
+        prodService.updateStocksLock(orderParam.getProdId(), orderParam.getSkuId(), orderParam.getProdCount(), prodDto.getVersion(),
+                prodDto.getSkuDtoMap().get(orderParam.getSkuId()).getVersion());
+
+        //
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void submitBasketOrder(List<BasketDto> basketDtoList, String userId) {
+    public void submitBasketOrder(OrderParam orderParam) {
+
+        List<BasketDto> basketDtoList = orderParam.getBasketDtoList();
+        // 用户ID todo
+
         // Redis库存预检查
         for (BasketDto basketDto : basketDtoList) {
             if (skuService.getSkuDtoBySkuId(basketDto.getSkuId()).getStocks() < basketDto.getStocks()) {
@@ -182,38 +198,20 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         try {
             // 设置锁的等待时间和超时时间
             boolean acquired = redissonMultiLock.tryLock(500, 30000, TimeUnit.MILLISECONDS);
+
+            // 获取到锁 业务执行
             if (acquired) {
+                for (BasketDto basketDto : basketDtoList) {
+                    // 乐观锁库存扣减
+                    ProdDto prodDto = prodService.getStocksAndVersion(basketDto.getProdId());
+                    prodService.updateStocksLock(basketDto.getProdId(), basketDto.getSkuId(), basketDto.getStocks(), prodDto.getVersion(),
+                            prodDto.getSkuDtoMap().get(basketDto.getSkuId()).getVersion());
+                }
+
+                // 发送订单消息至kafka todo
+
                 for (RLock rLock : rLocks) rLock.unlock();
             }
-
-            for (BasketDto basketDto : basketDtoList) {
-                // 乐观锁库存扣减
-                ProdDto prodDto = prodService.getStocksAndVersion(basketDto.getProdId());
-                prodService.updateStocksLock(basketDto.getProdId(), basketDto.getSkuId(), basketDto.getStocks(), prodDto.getVersion(),
-                        prodDto.getSkuDtoMap().get(basketDto.getSkuId()).getVersion());
-            }
-
-            Map<String, List<BasketDto>> basketDtoMap = basketDtoList.stream().collect(Collectors.groupingBy(BasketDto::getShopId));
-
-            // 计算店铺优惠 todo
-
-            for (Map.Entry<String, List<BasketDto>> entry : basketDtoMap.entrySet()) {
-                String OrderSerialNumber = IdUtil.getSnowflake().nextIdStr();
-
-                for (BasketDto basketDto : entry.getValue()) {
-                    // 订单地址保存
-                    UserAddrDto userAddrDto = StrUtil.isEmpty(basketDto.getAddrId()) ? userAddrService.getCommonAddr(basketDto.getUserId()) : userAddrService.getUserAddrDtoByUserIdAndAddrId(userId, basketDto.getAddrId());
-                    UserAddrOrderDo userAddrOrderDo = BeanUtil.copyProperties(userAddrDto, UserAddrOrderDo.class);
-                    userAddrOrderDo.setOrderSerialNumber(OrderSerialNumber);
-                    basketDto.setAddrOrderId(String.valueOf(userAddrOrderService.getBaseMapper().insert(userAddrOrderDo)));
-
-                    // 生成订单项
-                    basketDto.setUserId(userId);
-                    orderItemService.createOrderItemByCart(basketDto);
-                }
-            }
-
-
         } catch (Exception e) {
             Thread.currentThread().interrupt();
         } finally {
@@ -223,9 +221,4 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     }
 
-    public static void main(String[] args) {
-        Snowflake snowflake = IdUtil.getSnowflake();
-        long l = snowflake.nextId();
-        System.out.println(l);
-    }
 }

@@ -61,9 +61,4 @@ public class OrderParam {
      */
     private List<BasketDto> basketDtoList;
 
-    /**
-     * 地址ID列表
-     */
-    private List<String> addrIdList;
-
 }

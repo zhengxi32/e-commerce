@@ -13,6 +13,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.repository.core.support.EventPublishingRepositoryProxyPostProcessor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.Acknowledgment;
@@ -88,7 +89,6 @@ public class ProdConsumerServiceImpl implements ProdConsumerService {
 
                 }
             }
-
             log.info("已同步产品 {} 变更到Redis: {}", prod.getProdId(), message.getType());
         });
     }

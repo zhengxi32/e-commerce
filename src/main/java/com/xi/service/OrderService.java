@@ -43,5 +43,5 @@ public interface OrderService extends IService<Order> {
      */
     void submitOrder(String userId, ShopOrderDto shopOrderDto);
 
-    void submitBasketOrder(List<BasketDto> basketDtoList, String userId);
+    void submitBasketOrder(OrderParam orderParam);
 }

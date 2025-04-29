@@ -99,7 +99,7 @@ public class OrderController {
     public Response<Void> submitBasketOrder(@RequestBody OrderParam orderParam) {
         String userId = "";
 
-        orderService.submitBasketOrder(orderParam.getBasketDtoList(), userId);
+        orderService.submitBasketOrder(orderParam);
 
         // 检查Redis库存 （库存不足返回）
 

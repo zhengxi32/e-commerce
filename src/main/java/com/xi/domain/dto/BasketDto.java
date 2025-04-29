@@ -45,6 +45,11 @@ public class BasketDto implements Serializable {
     private String skuId;
 
     /**
+     * Sku名
+     */
+    private String skuName;
+
+    /**
      * 用户ID
      */
     private String userId;
@@ -103,6 +108,5 @@ public class BasketDto implements Serializable {
      * 订购流水号
      */
     private String orderSerialNumber;
-
 
 }
