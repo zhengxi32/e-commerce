@@ -3,6 +3,8 @@ package com.xi.domain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,30 +14,31 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 订单项
+ * 订单表
  * </p>
  *
  * @author 郑西
- * @since 2025-04-28
+ * @since 2025-04-29
  */
 @Getter
 @Setter
 @Accessors(chain = true)
-@TableName("tb_order_item")
-public class OrderItemDo implements Serializable {
+@TableName("tb_order")
+public class OrderDo implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
      * 订单项ID
      */
     @TableId(value = "order_item_id", type = IdType.AUTO)
-    private String orderItemId;
+    private Long orderItemId;
 
     /**
      * 店铺Id
      */
-    private String shopId;
+    private Long shopId;
 
     /**
      * 店铺名称
@@ -78,14 +81,19 @@ public class OrderItemDo implements Serializable {
     private BigDecimal actualCost;
 
     /**
-     * 支付方式, 0：手动代付, 1：微信支付, 2：支付宝
+     * 用户订单地址Id
      */
-    private Integer payType;
+    private Long addrOrderId;
 
     /**
      * 订单备注
      */
     private String remarks;
+
+    /**
+     * 支付方式, 0：手动代付, 1：微信支付, 2：支付宝
+     */
+    private Boolean payType;
 
     /**
      * 订单状态, 1：待付款, 2：待发货, 3：待收货, 4：待评价, 5：成功, 6：失败
@@ -116,16 +124,6 @@ public class OrderItemDo implements Serializable {
      * 订单运费
      */
     private BigDecimal freightAmount;
-
-    /**
-     * 用户订单地址Id
-     */
-    private String addrOrderId;
-
-    /**
-     * 订单商品总数
-     */
-    private Integer productNums;
 
     /**
      * 订购时间
@@ -160,7 +158,7 @@ public class OrderItemDo implements Serializable {
     /**
      * 用户订单删除状态, 0：未删除, 1：已删除
      */
-    private Integer isDelete;
+    private Boolean isDelete;
 
     /**
      * 优惠总额
