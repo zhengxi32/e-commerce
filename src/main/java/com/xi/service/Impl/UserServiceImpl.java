@@ -1,6 +1,6 @@
 package com.xi.service.Impl;
 
-import com.xi.domain.User;
+import com.xi.domain.UserDo;
 import com.xi.mapper.UserMapper;
 import com.xi.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2025-04-27
  */
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, UserDo> implements UserService {
 
 }

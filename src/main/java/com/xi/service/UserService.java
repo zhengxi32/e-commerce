@@ -1,6 +1,6 @@
 package com.xi.service;
 
-import com.xi.domain.User;
+import com.xi.domain.UserDo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author 郑西
  * @since 2025-04-27
  */
-public interface UserService extends IService<User> {
+public interface UserService extends IService<UserDo> {
 
 }

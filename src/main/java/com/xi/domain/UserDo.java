@@ -23,7 +23,7 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @TableName("tb_user")
-public class User implements Serializable {
+public class UserDo implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

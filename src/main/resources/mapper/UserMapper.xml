@@ -3,7 +3,7 @@
 <mapper namespace="com.xi.mapper.UserMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.xi.domain.User">
+    <resultMap id="BaseResultMap" type="com.xi.domain.UserDo">
         <id column="user_id" property="userId" />
         <result column="nick_name" property="nickName" />
         <result column="real_name" property="realName" />
