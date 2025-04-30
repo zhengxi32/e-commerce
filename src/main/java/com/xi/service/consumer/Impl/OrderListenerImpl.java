@@ -3,8 +3,11 @@ package com.xi.service.consumer.Impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import com.xi.convert.OrderConvert;
+import com.xi.domain.OrderDo;
 import com.xi.domain.UserAddrOrderDo;
 import com.xi.domain.dto.BasketDto;
+import com.xi.domain.dto.OrderDto;
 import com.xi.domain.dto.UserAddrDto;
 import com.xi.domain.param.OrderParam;
 import com.xi.service.OrderService;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -47,7 +51,7 @@ public class OrderListenerImpl implements OrderListener {
                 userAddrOrderDo.setOrderSerialNumber(OrderSerialNumber);
                 basketDto.setAddrOrderId(String.valueOf(userAddrOrderService.getBaseMapper().insert(userAddrOrderDo)));
 
-                // 生成订单项
+                // 生成订单
                 basketDto.setUserId("userId");
                 orderService.createOrderByCart(basketDto);
             }
@@ -58,8 +62,21 @@ public class OrderListenerImpl implements OrderListener {
     @Override
     public void createOrderAndUserAddrOrder(OrderParam orderParam) {
         String OrderSerialNumber = IdUtil.getSnowflake().nextIdStr();
+
+        // 订单地址保存
         UserAddrDto userAddrDto = StrUtil.isEmpty(orderParam.getAddrId()) ? userAddrService.getCommonAddr("userId") :
                 userAddrService.getUserAddrDtoByUserIdAndAddrId("userId", orderParam.getAddrId());
+        UserAddrOrderDo userAddrOrderDo = BeanUtil.copyProperties(userAddrDto, UserAddrOrderDo.class);
+        userAddrOrderDo.setOrderSerialNumber(OrderSerialNumber);
+        orderParam.setOrderSerialId(String.valueOf(userAddrOrderService.getBaseMapper().insert(userAddrOrderDo)));
 
+        // 生成订单
+        OrderDto orderDto = OrderConvert.INSTANCE.OrderParamToDto(orderParam);
+        OrderDo orderDo = OrderConvert.INSTANCE.OrderDtoToDo(orderDto);
+        orderDo.setUserId("userId");
+        orderDo.setCreateTime(LocalDateTime.now());
+        orderDo.setUpdateTime(LocalDateTime.now());
+        orderService.save(orderDo);
     }
+
 }

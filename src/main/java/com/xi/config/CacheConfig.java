@@ -19,9 +19,9 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableCaching
-public class MultiLevelCacheConfig {
+public class CacheConfig {
 
-    private static final Logger logger = LoggerFactory.getLogger(MultiLevelCacheConfig.class);
+    private static final Logger logger = LoggerFactory.getLogger(CacheConfig.class);
 
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory factory) {

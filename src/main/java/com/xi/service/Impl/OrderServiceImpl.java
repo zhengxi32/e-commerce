@@ -56,6 +56,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
         prodService.updateStocksLock(orderParam.getProdId(), orderParam.getSkuId(), orderParam.getProdCount(), prodDto.getVersion(),
                 prodDto.getSkuDtoMap().get(orderParam.getSkuId()).getVersion());
 
+
     }
 
     @Override

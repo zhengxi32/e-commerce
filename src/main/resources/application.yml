@@ -57,13 +57,6 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
       acks: all
-    consumer:
-      group-id: default-group
-      auto-offset-reset: earliest
-      enable-auto-commit: false
-    listener:
-      type: single
-      ack-mode: MANUAL_IMMEDIATE
 
 server:
   port: 5200
