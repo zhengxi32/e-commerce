@@ -21,28 +21,4 @@ public interface ProdService extends IService<ProdDo> {
      */
     ProdDto getProdDtoByProdId(String prodId);
 
-    /**
-     * 扣减库存
-     * @param prodId 商品ID
-     * @param totalStocks 下单商品数
-     */
-    void updateStocks(String prodId, Integer totalStocks);
-
-    /**
-     * 扣减库存 乐观锁更新
-     * @param prodId 商品ID
-     * @param skuId skuID
-     * @param totalStocks 扣减库存
-     * @param prodVersion prod版本号
-     * @param skuVersion sku版本号
-     */
-    public void updateStocksLock(String prodId, String skuId, Integer totalStocks, Integer prodVersion, Integer skuVersion);
-
-    /**
-     * 获取指定商品Sku
-     * @param prodId 商品ID
-     * @return 返回商品Sku库存与版本号
-     */
-    ProdDto getStocksAndVersion(String prodId);
-
 }

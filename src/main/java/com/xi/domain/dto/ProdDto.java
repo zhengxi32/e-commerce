@@ -93,6 +93,11 @@ public class ProdDto implements Serializable {
     private Integer version;
 
     /**
+     * 单个Sku库存
+     */
+    private SkuDto skuDto;
+
+    /**
      * sku库存
      */
     private Map<String, SkuDto> skuDtoMap;

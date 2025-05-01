@@ -16,7 +16,7 @@ public class RedisConfig {
     @Bean
     public RedissonClient redissonClient() {
         Config config = new Config();
-        config.setLockWatchdogTimeout(10000) // 看门狗超时时间设置
+        config.setLockWatchdogTimeout(10000) // 看门狗超时时间设置 不宜过短否则大量续期会带来性能损耗
                 .useClusterServers() // 集群模式
                 .setScanInterval(2000) //扫描 Redis 集群节点状态时间间隔
                 .addNodeAddress(); // Redis 集群主节点地址

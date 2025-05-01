@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>
@@ -29,4 +30,8 @@ public interface SkuMapper extends BaseMapper<SkuDo> {
 
     @MapKey("skuId")
     Map<String, SkuDto> getStocksAndVersionByProdId(String prodId);
+
+    List<String> getSkuIdsByProdId(String prodId);
+
+    SkuDo getStocksAndVersionBySkuId(String skuId);
 }

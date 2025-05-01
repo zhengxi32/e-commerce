@@ -22,11 +22,13 @@ public class RedisLockAspect {
     public Object redisLock(ProceedingJoinPoint joinPoint, RedisLock redisLock) throws Throwable {
         RLock rLock = redissonClient.getLock(redisLock.key());
 
-        rLock.lock(redisLock.expire(), redisLock.timeUnit());
-
-        Object result;
+        Object result = new Object();
         try {
+            rLock.tryLock(redisLock.waitTime(), redisLock.leastTime(), redisLock.timeUnit());
             result = joinPoint.proceed();
+            rLock.unlock();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         } finally {
             rLock.unlock();
         }

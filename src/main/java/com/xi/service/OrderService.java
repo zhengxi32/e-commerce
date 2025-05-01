@@ -33,4 +33,16 @@ public interface OrderService extends IService<OrderDo> {
      */
     void createOrderByCart(BasketDto basketDto);
 
+    /**
+     * 提交订单 秒杀场景
+     * @param orderParam 订单信息
+     */
+    void submitOrderInSecKill(OrderParam orderParam);
+
+    /**
+     * 提交购物车订单 秒杀场景
+     * @param orderParam 订单信息
+     */
+    void submitBasketOrderInSecKill(OrderParam orderParam);
+
 }

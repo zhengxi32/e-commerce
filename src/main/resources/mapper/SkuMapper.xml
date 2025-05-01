@@ -45,5 +45,15 @@
         from tb_sku where prod_id = #{prodId}
     </select>
 
+    <select id="getSkuIdsByProdId" resultType="java.lang.String">
+        select skuId
+        from tb_sku where prod_id = #{prodId}
+    </select>
+
+    <select id="getStocksAndVersionBySkuId" resultType="com.xi.domain.SkuDo">
+        select <include refid="Base_Column_List"></include>
+        from tb_sku where sku_id = #{skuId}
+    </select>
+
 
 </mapper>

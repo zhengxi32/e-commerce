@@ -15,10 +15,16 @@ public @interface RedisLock {
     String key() default "";
 
     /**
-     *
-     * @return 锁过期时间，默认为 5 毫秒
+     * 锁等待时间
+     * @return 默认为 50 毫秒
      */
-    int expire() default 5000;
+    int waitTime() default 50;
+
+    /**
+     * 锁过期时间
+     * @return 默认为 3000 毫秒
+     */
+    int leastTime() default 3000;
 
     /**
      *
