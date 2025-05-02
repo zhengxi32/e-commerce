@@ -109,4 +109,9 @@ public class BasketDto implements Serializable {
      */
     private String orderSerialNumber;
 
+    /**
+     * 处理标识位
+     */
+    private volatile Boolean deal;
+
 }
