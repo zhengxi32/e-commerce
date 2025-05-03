@@ -18,7 +18,7 @@ public enum ResponseCodeEnum implements BaseException {
     ORDER_EXPIRED("AUTH-20002", "订单已过期"),
     STOCKS_NOT_ENOUGH("AUTH-20003", "库存不足"),
     PROD_NOT_EXIST("AUTH-20004", "商品不存在"),
-    ;
+    STOCKS_RELEASE_ERROR("AUTH-20005", "库存释放失败");
 
     // 异常码
     private final String errorCode;

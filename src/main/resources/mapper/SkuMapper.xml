@@ -35,6 +35,10 @@
         update tb_sku set stocks = stocks - #{stocks}, version = version + 1 where sku_id = #{skuId} and stocks &gt;= #{stocks} and version = #{version}
     </update>
 
+    <update id="releaseStock">
+        update tb_sku set stocks = stocks + #{stocks}, version = version + 1 where sku_id = #{skuId} and version = #{version}
+    </update>
+
     <select id="getSkuDoBySkuId" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"></include>
         from tb_sku where sku_id = #{skuId}
@@ -53,6 +57,11 @@
     <select id="getStocksAndVersionBySkuId" resultType="com.xi.domain.SkuDo">
         select <include refid="Base_Column_List"></include>
         from tb_sku where sku_id = #{skuId}
+    </select>
+
+    <select id="getStocksAndVersionAll" resultType="com.xi.domain.SkuDo">
+        select stocks, version, sku_id
+        from tb_sku where status = 1
     </select>
 
 

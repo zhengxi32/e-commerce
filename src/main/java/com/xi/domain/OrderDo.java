@@ -61,12 +61,17 @@ public class OrderDo implements Serializable {
     private Integer prodCount;
 
     /**
-     * 订单流水号
+     * 商品ID
      */
-    private String orderSerialId;
+    private String prodId;
 
     /**
-     * 订购流水号
+     * 单品ID
+     */
+    private String skuId;
+
+    /**
+     * 订单流水号
      */
     private String orderSerialNumber;
 

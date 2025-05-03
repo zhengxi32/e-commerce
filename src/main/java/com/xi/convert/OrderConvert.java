@@ -10,7 +10,9 @@ import org.mapstruct.factory.Mappers;
 public interface OrderConvert {
     OrderConvert INSTANCE = Mappers.getMapper(OrderConvert.class);
 
-    OrderDto OrderParamToDto(OrderParam param);
+    OrderDto OrderParamToDto(OrderParam orderParam);
 
-    OrderDo OrderDtoToDo(OrderDto dto);
+    OrderDo OrderDtoToDo(OrderDto orderDto);
+
+    OrderDto OrderDoToDto(OrderDo orderDo);
 }

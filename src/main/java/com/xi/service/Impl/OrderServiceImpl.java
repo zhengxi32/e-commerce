@@ -1,27 +1,31 @@
 package com.xi.service.Impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xi.annotation.RedisLock;
 import com.xi.constant.RedisConstant;
-import com.xi.constant.SystemConstant;
+import com.xi.constant.TagConstant;
+import com.xi.constant.TopicConstant;
+import com.xi.convert.OrderConvert;
 import com.xi.domain.OrderDo;
+import com.xi.domain.UserAddrOrderDo;
 import com.xi.domain.dto.BasketDto;
-import com.xi.domain.dto.SkuDto;
+import com.xi.domain.dto.OrderDto;
+import com.xi.domain.dto.UserAddrDto;
 import com.xi.domain.param.OrderParam;
 import com.xi.enums.ResponseCodeEnum;
 import com.xi.exception.BizException;
 import com.xi.mapper.OrderMapper;
-import com.xi.service.BasketService;
-import com.xi.service.OrderService;
-import com.xi.service.SkuService;
+import com.xi.service.*;
 import jakarta.annotation.Resource;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.redisson.RedissonMultiLock;
-import org.redisson.api.RLock;
+import org.apache.rocketmq.common.message.MessageConst;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.redisson.api.RScript;
 import org.redisson.api.RedissonClient;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,9 +33,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -53,18 +58,32 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
     @Resource
     private BasketService basketService;
 
+    @Resource
+    private UserAddrService userAddrService;
+
+    @Resource
+    private UserAddrOrderService userAddrOrderService;
+
+    @Resource
+    private RocketMQTemplate rocketMQTemplate;
+
     @Resource(name = "secKillStockDeductThreadPool")
     private ExecutorService executorService;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    @RedisLock(key = "#orderParam.skuId")
     public void SubmitOrder(OrderParam orderParam) {
-        // 乐观锁库存扣减
-        SkuDto skuDto = skuService.getStocksAndVersionBySkuId(orderParam.getSkuId());
-        skuService.updateStocksLock(orderParam.getSkuId(), orderParam.getProdCount(), skuDto.getVersion());
+        // 创建订单
+        String orderSerialNumber = createOrderAndUserAddrOrder(orderParam);
+        orderParam.setOrderSerialNumberList(Collections.singletonList(orderSerialNumber));
+        orderParam.setTag(TagConstant.ORDER_TAG_DIRECT_PURCHASE);
 
-        // 发送订单消息至kafka todo
+        // 发送半事务消息
+        rocketMQTemplate.sendMessageInTransaction(
+                TopicConstant.ORDER_CREATE_TOPIC,
+                MessageBuilder.withPayload(orderParam).setHeader(MessageConst.PROPERTY_TAGS, TagConstant.ORDER_TAG_DIRECT_PURCHASE).build(),
+                null
+        );
 
     }
 
@@ -80,52 +99,22 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
             }
         }
 
-        // Redisson分布式锁
-        RLock[] rLocks = new RLock[basketDtoList.size()];
+        // 创建订单
+        List<String> orderSerialNumberList = createOrderAndUserAddrOrder(basketDtoList);
+        orderParam.setOrderSerialNumberList(orderSerialNumberList);
+        orderParam.setTag(TagConstant.ORDER_TAG_BASKET_PURCHASE);
 
-        // SkuID排序 避免死锁
-        basketService.sortListBySkuIdAsc(basketDtoList);
-
-        for (BasketDto basketDto : basketDtoList) {
-            rLocks[0] = redissonClient.getLock(SystemConstant.LOCK + basketDto.getSkuId());
-        }
-        RedissonMultiLock redissonMultiLock = new RedissonMultiLock(rLocks);
-
-        try {
-            // 设置锁的等待时间和超时时间
-            boolean acquired = redissonMultiLock.tryLock(50, 3000, TimeUnit.MILLISECONDS);
-
-            // 获取到锁 业务执行
-            if (acquired) {
-                for (BasketDto basketDto : basketDtoList) {
-                    // 乐观锁库存扣减
-                    SkuDto skuDto = skuService.getStocksAndVersionBySkuId(basketDto.getSkuId());
-                    skuService.updateStocksLock(basketDto.getSkuId(), basketDto.getStocks(), skuDto.getVersion());
-                }
-
-                // 发送订单消息至kafka todo
-
-                for (RLock rLock : rLocks) rLock.unlock();
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        } finally {
-            // 释放锁
-            redissonMultiLock.unlock();
-        }
+        // 发送半事务消息
+        rocketMQTemplate.sendMessageInTransaction(
+                TopicConstant.ORDER_CREATE_TOPIC,
+                MessageBuilder.withPayload(orderParam).setHeader(MessageConst.PROPERTY_TAGS, TagConstant.ORDER_TAG_BASKET_PURCHASE).build(),
+                null
+        );
 
     }
 
-
     @Override
-    public void createOrderByCart(BasketDto basketDto) {
-        OrderDo orderDo = BeanUtil.copyProperties(basketDto, OrderDo.class);
-        orderDo.setCreateTime(LocalDateTime.now());
-        orderDo.setUpdateTime(LocalDateTime.now());
-        this.save(orderDo);
-    }
-
-    @Override
+    @Transactional(rollbackFor = Exception.class)
     public void submitOrderInSecKill(OrderParam orderParam) {
         // Redis原子扣减
         RScript script = redissonClient.getScript();
@@ -152,10 +141,27 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
                 RedisConstant.VERSION
         );
 
-        // kafka处理库存扣减与订单生成 todo
+        // 预扣减失败
+        if (re == 0) {
+            throw new BizException(ResponseCodeEnum.STOCKS_NOT_ENOUGH);
+        }
+
+        // 创建订单
+        String orderSerialNumber = createOrderAndUserAddrOrder(orderParam);
+        orderParam.setOrderSerialNumberList(Collections.singletonList(orderSerialNumber));
+        orderParam.setTag(TagConstant.ORDER_TAG_SEC_KILL_DIRECT_PURCHASE);
+
+        // 发送半事务消息
+        rocketMQTemplate.sendMessageInTransaction(
+                TopicConstant.ORDER_CREATE_TOPIC,
+                MessageBuilder.withPayload(orderParam).setHeader(MessageConst.PROPERTY_TAGS, TagConstant.ORDER_TAG_SEC_KILL_DIRECT_PURCHASE).build(),
+                null
+        );
+
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void submitBasketOrderInSecKill(OrderParam orderParam) {
         // 获取购物车列表
         List<BasketDto> basketDtoList = orderParam.getBasketDtoList();
@@ -189,7 +195,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
             rollbackDeduction(successItems);
         }
 
-        // kafka异步执行库存实际扣减与订单创建 todo
+        List<String> orderSerialNumberList = createOrderAndUserAddrOrder(orderParam.getBasketDtoList());
+        orderParam.setOrderSerialNumberList(orderSerialNumberList);
+        orderParam.setTag(TagConstant.ORDER_TAG_SEC_KILL_BASKET_PURCHASE);
+
+        // 发送半事务消息
+        rocketMQTemplate.sendMessageInTransaction(
+                TopicConstant.ORDER_CREATE_TOPIC,
+                MessageBuilder.withPayload(orderParam).setHeader(MessageConst.PROPERTY_TAGS, TagConstant.ORDER_TAG_SEC_KILL_BASKET_PURCHASE).build(),
+                null
+        );
     }
 
     /**
@@ -258,4 +273,77 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
         private BasketDto basketDto;
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public List<String> createOrderAndUserAddrOrder(List<BasketDto> basketDtoList) {
+        Map<String, List<BasketDto>> basketDtoMap = basketDtoList.stream().collect(Collectors.groupingBy(BasketDto::getShopId));
+        List<String> idList = new ArrayList<>();
+        for (Map.Entry<String, List<BasketDto>> entry : basketDtoMap.entrySet()) {
+            String orderSerialNumber = IdUtil.getSnowflake().nextIdStr();
+            idList.add(orderSerialNumber);
+
+            for (BasketDto basketDto : entry.getValue()) {
+                // 订单地址保存
+                UserAddrDto userAddrDto = StrUtil.isEmpty(basketDto.getAddrId()) ? userAddrService.getCommonAddr("userId") :
+                        userAddrService.getUserAddrDtoByUserIdAndAddrId("userId", basketDto.getAddrId());
+                UserAddrOrderDo userAddrOrderDo = BeanUtil.copyProperties(userAddrDto, UserAddrOrderDo.class);
+                userAddrOrderDo.setOrderSerialNumber(orderSerialNumber);
+                basketDto.setAddrOrderId(String.valueOf(userAddrOrderService.getBaseMapper().insert(userAddrOrderDo)));
+
+                // 生成订单
+                basketDto.setUserId("userId");
+                this.createOrderByCart(basketDto);
+            }
+        }
+        return idList;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public String createOrderAndUserAddrOrder(OrderParam orderParam) {
+        String orderSerialNumber = IdUtil.getSnowflake().nextIdStr();
+
+        // 订单地址保存
+        UserAddrDto userAddrDto = StrUtil.isEmpty(orderParam.getAddrId()) ? userAddrService.getCommonAddr("userId") :
+                userAddrService.getUserAddrDtoByUserIdAndAddrId("userId", orderParam.getAddrId());
+        UserAddrOrderDo userAddrOrderDo = BeanUtil.copyProperties(userAddrDto, UserAddrOrderDo.class);
+        userAddrOrderDo.setOrderSerialNumber(orderSerialNumber);
+        orderParam.setUserAddrOrderId(String.valueOf(userAddrOrderService.getBaseMapper().insert(userAddrOrderDo)));
+
+        // 生成订单
+        OrderDto orderDto = OrderConvert.INSTANCE.OrderParamToDto(orderParam);
+        OrderDo orderDo = OrderConvert.INSTANCE.OrderDtoToDo(orderDto);
+        orderDo.setUserId("userId");
+        orderDo.setCreateTime(LocalDateTime.now());
+        orderDo.setUpdateTime(LocalDateTime.now());
+        this.save(orderDo);
+
+        return orderSerialNumber;
+    }
+
+    @Override
+    public void createOrderByCart(BasketDto basketDto) {
+        OrderDo orderDo = BeanUtil.copyProperties(basketDto, OrderDo.class);
+        orderDo.setCreateTime(LocalDateTime.now());
+        orderDo.setUpdateTime(LocalDateTime.now());
+        this.save(orderDo);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void cancelOrder(List<String> orderSerialNumberList) {
+        this.removeBatchByIds(orderSerialNumberList);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void batchUpdateStatus(List<String> orderIdList) {
+        this.baseMapper.batchUpdateStatus(orderIdList);
+    }
+
+    @Override
+    public List<OrderDto> getTimeoutOrders() {
+        List<OrderDo> timeoutOrders = this.baseMapper.getTimeoutOrders();
+        return timeoutOrders.stream().map(OrderConvert.INSTANCE::OrderDoToDto).toList();
+    }
 }

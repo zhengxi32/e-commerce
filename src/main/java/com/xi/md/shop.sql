@@ -2,110 +2,111 @@ drop table if exists tb_shop;
 
 create table tb_shop
 (
-    shop_id            bigint auto_increment comment '店铺ID'
+    shop_id            bigint auto_increment COMMENT '店铺ID'
         primary key,
-    shop_name          varchar(50)    null comment '店铺名称',
-    user_id            varchar(36)    null comment '店长用户ID',
-    shop_type          tinyint(1)     null comment '店铺类型',
-    intro              varchar(200)   null comment '店铺简介',
-    shop_notice        varchar(50)    null comment '店铺公告',
-    shop_industry      tinyint(1)     null comment '店铺行业',
-    shop_owner         varchar(20)    null comment '店长',
-    mobile             varchar(20)    null comment '店铺绑定的手机',
-    tel                varchar(20)    null comment '店铺联系电话',
-    shop_lat           varchar(20)    null comment '店铺所在纬度',
-    shop_lng           varchar(20)    null comment '店铺所在经度',
-    shop_address       varchar(100)   null comment '店铺详细地址',
-    province           varchar(10)    null comment '店铺所在省份',
-    city               varchar(10)    null comment '店铺所在城市',
-    area               varchar(10)    null comment '店铺所在区域',
-    pca_code           varchar(20)    null comment '店铺省市区代码，用于回显',
-    shop_logo          varchar(200)   null comment '店铺LOGO',
-    shop_photos        varchar(1000)  null comment '店铺相册',
-    shop_status        tinyint(1)     null comment '店铺状态, 0：未开通, 1：营业中, 2：停业中',
-    full_free_shipping decimal(15, 2) null comment '满X包邮',
-    create_time        datetime       null comment '创建时间',
-    update_time        datetime       null comment '更新时间'
-) comment '店铺表' charset = utf8mb4;
+    shop_name          varchar(50)    NULL COMMENT '店铺名称',
+    user_id            varchar(36)    NULL COMMENT '店长用户ID',
+    shop_type          tinyint(1)     NULL COMMENT '店铺类型',
+    intro              varchar(200)   NULL COMMENT '店铺简介',
+    shop_notice        varchar(50)    NULL COMMENT '店铺公告',
+    shop_industry      tinyint(1)     NULL COMMENT '店铺行业',
+    shop_owner         varchar(20)    NULL COMMENT '店长',
+    mobile             varchar(20)    NULL COMMENT '店铺绑定的手机',
+    tel                varchar(20)    NULL COMMENT '店铺联系电话',
+    shop_lat           varchar(20)    NULL COMMENT '店铺所在纬度',
+    shop_lng           varchar(20)    NULL COMMENT '店铺所在经度',
+    shop_address       varchar(100)   NULL COMMENT '店铺详细地址',
+    province           varchar(10)    NULL COMMENT '店铺所在省份',
+    city               varchar(10)    NULL COMMENT '店铺所在城市',
+    area               varchar(10)    NULL COMMENT '店铺所在区域',
+    pca_code           varchar(20)    NULL COMMENT '店铺省市区代码，用于回显',
+    shop_logo          varchar(200)   NULL COMMENT '店铺LOGO',
+    shop_photos        varchar(1000)  NULL COMMENT '店铺相册',
+    shop_status        tinyint(1)     NULL COMMENT '店铺状态, 0：未开通, 1：营业中, 2：停业中',
+    full_free_shipping decimal(15, 2) NULL COMMENT '满X包邮',
+    create_time        datetime       NULL COMMENT '创建时间',
+    update_time        datetime       NULL COMMENT '更新时间'
+) COMMENT '店铺表' charset = utf8mb4;
 
 drop table if exists tb_prod;
 
 create table tb_prod
 (
-    prod_id      bigint unsigned auto_increment comment '产品ID'
+    prod_id      bigint unsigned auto_increment COMMENT '产品ID'
         primary key,
-    prod_name    varchar(300) default '' not null comment '商品名称',
-    shop_id      bigint                  null comment '店铺ID',
-    price        decimal(15, 2)          null comment '现价',
-    brief        varchar(500) default '' null comment '描述',
-    pic          varchar(255)            null comment '商品主图',
-    images       varchar(1000)           null comment '商品图片，以,分割',
-    status       tinyint(1)   default 1  null comment '默认是1, 表示正常状态, 2表示下架, 3表示删除',
-    category_id  bigint unsigned         null comment '商品分类',
-    sold_num     int                     null comment '销量',
-    total_stocks int          default 0  null comment '总库存',
-    create_time  datetime                null comment '录入时间',
-    update_time  datetime                null comment '修改时间',
-    putaway_time datetime                null comment '上架时间',
-    version      int                     null comment '版本号'
-) comment '商品表' charset = utf8mb4;
+    prod_name    varchar(300) DEFAULT '' NOT NULL COMMENT '商品名称',
+    shop_id      bigint                  NULL COMMENT '店铺ID',
+    price        decimal(15, 2)          NULL COMMENT '现价',
+    brief        varchar(500) DEFAULT '' NULL COMMENT '描述',
+    pic          varchar(255)            NULL COMMENT '商品主图',
+    images       varchar(1000)           NULL COMMENT '商品图片，以,分割',
+    status       tinyint(1)   DEFAULT 1  NULL COMMENT '默认是1, 表示正常状态, 2表示下架, 3表示删除',
+    category_id  bigint unsigned         NULL COMMENT '商品分类',
+    sold_num     int                     NULL COMMENT '销量',
+    total_stocks int          DEFAULT 0  NULL COMMENT '总库存',
+    create_time  datetime                NULL COMMENT '录入时间',
+    update_time  datetime                NULL COMMENT '修改时间',
+    putaway_time datetime                NULL COMMENT '上架时间',
+    version      int                     NULL COMMENT '版本号'
+) COMMENT '商品表' charset = utf8mb4;
 
 drop table if exists tb_sku;
 
 create table tb_sku
 (
-    sku_id      bigint unsigned auto_increment comment '单品ID'
+    sku_id      bigint unsigned auto_increment COMMENT '单品ID'
         primary key,
-    sku_name    varchar(120)         null comment 'sku名称',
-    prod_id     bigint unsigned      not null comment '商品ID',
-    prod_name   varchar(255)         null comment '商品名称',
-    properties  varchar(2000)        null comment '销售属性组合字符串 格式是p1：v1;p2：v2',
-    price       decimal(15, 2)       null comment '价格',
-    stocks      int                  null comment '实际库存',
-    party_code  varchar(100)         null comment '商家编码',
-    model_id    varchar(100)         null comment '商品条形码',
-    pic         varchar(500)         null comment 'sku图片',
-    weight      double               null comment '商品重量',
-    volume      double               null comment '商品体积',
-    status      tinyint(1) default 1 null comment '0 禁用 1 启用',
-    create_time datetime             null comment '录入时间',
-    update_time datetime             null comment '修改时间',
-    version     int        default 0 not null comment '版本号'
-) comment '商品规格表' charset = utf8mb4;
+    sku_name    varchar(120)         NULL COMMENT 'sku名称',
+    prod_id     bigint unsigned      NOT NULL COMMENT '商品ID',
+    prod_name   varchar(255)         NULL COMMENT '商品名称',
+    properties  varchar(2000)        NULL COMMENT '销售属性组合字符串 格式是p1：v1;p2：v2',
+    price       decimal(15, 2)       NULL COMMENT '价格',
+    stocks      int                  NULL COMMENT '实际库存',
+    party_code  varchar(100)         NULL COMMENT '商家编码',
+    model_id    varchar(100)         NULL COMMENT '商品条形码',
+    pic         varchar(500)         NULL COMMENT 'sku图片',
+    weight      double               NULL COMMENT '商品重量',
+    volume      double               NULL COMMENT '商品体积',
+    status      tinyint(1) DEFAULT 1 NULL COMMENT '0 禁用 1 启用',
+    create_time datetime             NULL COMMENT '录入时间',
+    update_time datetime             NULL COMMENT '修改时间',
+    version     int        DEFAULT 0 NOT NULL COMMENT '版本号'
+) COMMENT '商品规格表' charset = utf8mb4;
 
 drop table if exists tb_order;
 
 create table tb_order
 (
-    order_item_id       bigint unsigned auto_increment comment '订单项ID' primary key,
-    shop_id             bigint                      null comment '店铺Id',
-    shop_name           varchar(50)                 null comment '店铺名称',
-    user_id             varchar(36)                 not null comment '订购用户ID',
-    prod_name           varchar(1000)  default ''   not null comment '产品名称',
+    order_item_id       bigint unsigned auto_increment COMMENT '订单项ID' primary key,
+    shop_id             bigint                      NULL COMMENT '店铺Id',
+    shop_name           varchar(50)                 NULL COMMENT '店铺名称',
+    user_id             varchar(36)                 NOT NULL COMMENT '订购用户ID',
+    prod_name           varchar(1000)  DEFAULT ''   NOT NULL COMMENT '产品名称',
     prod_count          int(11)                     NOT NULL DEFAULT '1' COMMENT '产品个数',
-    order_serial_id     varchar(36)                 not null comment '订单流水号',
-    order_serial_number varchar(50)                 not null comment '订购流水号',
-    cost                decimal(15, 2) default 0.00 not null comment '总值',
-    actual_cost         decimal(15, 2)              null comment '实际总值',
-    addr_order_id       bigint                      null comment '用户订单地址Id',
-    remarks             varchar(1024)               null comment '订单备注',
-    pay_type            tinyint(1)                  null comment '支付方式, 0：手动代付, 1：微信支付, 2：支付宝',
-    status              int            default 1    not null comment '订单状态, 1：待付款, 2：待发货, 3：待收货, 4：待评价, 5：成功, 6：失败',
-    dvy_id              bigint                      null comment '配送方式ID',
-    dvy_type            varchar(10)                 null comment '配送类型, 1：物流配送, 2：无需配送',
-    dvy_flow_id         varchar(100)                null comment '物流单号',
-    dvy_time            datetime                    null comment '发货时间',
-    freight_amount      decimal(15, 2) default 0.00 null comment '订单运费',
-    create_time         datetime                    not null comment '订购时间',
-    update_time         datetime                    null comment '订单更新时间',
-    pay_time            datetime                    null comment '付款时间',
-    finally_time        datetime                    null comment '完成时间',
-    cancel_time         datetime                    null comment '取消时间',
-    is_payed            tinyint(1)     default 0    null comment '是否已支付, 1：已支付, 0：未支付',
-    is_delete           tinyint(1)     default 0    null comment '用户订单删除状态, 0：未删除, 1：已删除',
-    reduce_amount       decimal(15, 2)              null comment '优惠总额',
-    close_type          tinyint(1)                  null comment '订单关闭原因, 1：超时未支付, 2：退款关闭, 3：买家取消, 4：已完成'
-) comment '订单项' charset = utf8mb4;
+    prod_id             bigint unsigned             NOT NULL COMMENT '商品ID',
+    sku_id              bigint unsigned             NOT NULL COMMENT '单品ID',
+    order_serial_number varchar(50)                 NOT NULL COMMENT '订购流水号',
+    cost                decimal(15, 2) DEFAULT 0.00 NOT NULL COMMENT '总值',
+    actual_cost         decimal(15, 2)              NULL COMMENT '实际总值',
+    addr_order_id       bigint                      NULL COMMENT '用户订单地址Id',
+    remarks             varchar(1024)               NULL COMMENT '订单备注',
+    pay_type            tinyint(1)                  NULL COMMENT '支付方式, 0：手动代付, 1：微信支付, 2：支付宝',
+    status              int            DEFAULT 1    NOT NULL COMMENT '订单状态, 1：待付款, 2：待发货, 3：待收货, 4：待评价, 5：成功, 6：失败',
+    dvy_id              bigint                      NULL COMMENT '配送方式ID',
+    dvy_type            varchar(10)                 NULL COMMENT '配送类型, 1：物流配送, 2：无需配送',
+    dvy_flow_id         varchar(100)                NULL COMMENT '物流单号',
+    dvy_time            datetime                    NULL COMMENT '发货时间',
+    freight_amount      decimal(15, 2) DEFAULT 0.00 NULL COMMENT '订单运费',
+    create_time         datetime                    NOT NULL COMMENT '订购时间',
+    update_time         datetime                    NULL COMMENT '订单更新时间',
+    pay_time            datetime                    NULL COMMENT '付款时间',
+    finally_time        datetime                    NULL COMMENT '完成时间',
+    cancel_time         datetime                    NULL COMMENT '取消时间',
+    is_payed            tinyint(1)     DEFAULT 0    NULL COMMENT '是否已支付, 1：已支付, 0：未支付',
+    is_delete           tinyint(1)     DEFAULT 0    NULL COMMENT '用户订单删除状态, 0：未删除, 1：已删除',
+    reduce_amount       decimal(15, 2)              NULL COMMENT '优惠总额',
+    close_type          tinyint(1)                  NULL COMMENT '订单关闭原因, 1：超时未支付, 2：退款关闭, 3：买家取消, 4：已完成'
+) COMMENT '订单项' charset = utf8mb4;
 
 drop table if exists tb_basket;
 

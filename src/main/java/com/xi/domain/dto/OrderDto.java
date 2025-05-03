@@ -16,14 +16,14 @@ public class OrderDto implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 订单项ID
+     * 订单ID
      */
-    private Long orderItemId;
+    private String orderId;
 
     /**
      * 店铺Id
      */
-    private Long shopId;
+    private String shopId;
 
     /**
      * 店铺名称
@@ -46,9 +46,14 @@ public class OrderDto implements Serializable {
     private Integer prodCount;
 
     /**
-     * 订单流水号
+     * 商品ID
      */
-    private String orderSerialId;
+    private String prodId;
+
+    /**
+     * 单品ID
+     */
+    private String skuId;
 
     /**
      * 订购流水号

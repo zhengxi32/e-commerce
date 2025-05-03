@@ -1,5 +1,6 @@
 package com.xi.service.Impl;
 
+import com.xi.annotation.RedisLock;
 import com.xi.constant.RedisConstant;
 import com.xi.convert.SkuConvert;
 import com.xi.domain.SkuDo;
@@ -17,6 +18,7 @@ import org.redisson.api.RedissonClient;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -46,13 +48,10 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, SkuDo> implements Sku
     }
 
     @Override
-    public void updateStocksLock(String skuId, Integer stocks, Integer skuVersion) {
+    public Boolean updateStocksLock(String skuId, Integer stocks, Integer skuVersion) {
         Integer result = this.baseMapper.updateStocksLock(skuId, stocks, skuVersion);
 
-        if (result == 0) {
-            throw new BizException(ResponseCodeEnum.STOCKS_NOT_ENOUGH);
-        }
-        // kafka异步更新缓存 todo
+        return result == 0 ? Boolean.FALSE : Boolean.TRUE;
     }
 
     @Override
@@ -72,4 +71,21 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, SkuDo> implements Sku
         return skuDto;
     }
 
+    @Override
+    public List<SkuDto> getStocksAndVersionAll() {
+        List<SkuDo> stocksAndVersionAll = this.baseMapper.getStocksAndVersionAll();
+        return stocksAndVersionAll.stream().map(SkuConvert.INSTANCE::SkuDoToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    @RedisLock(key = "#skuId")
+    @Transactional
+    public void releaseStock(String skuId, Integer stocks) {
+        RMap<String, Integer> map = redissonClient.getMap(RedisConstant.getSkuKey(skuId));
+        Integer version = map.get(RedisConstant.VERSION + skuId);
+        Integer result = this.baseMapper.releaseStock(skuId, stocks, version);
+        if (result == 0) {
+            throw new BizException(ResponseCodeEnum.STOCKS_RELEASE_ERROR);
+        }
+    }
 }

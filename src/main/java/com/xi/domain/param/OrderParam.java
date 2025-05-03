@@ -47,9 +47,14 @@ public class OrderParam {
     private String addrId;
 
     /**
-     * 订单流水号
+     * 订单地址ID
      */
-    private String orderSerialId;
+    private String userAddrOrderId;
+
+    /**
+     * 订单流水号列表
+     */
+    private List<String> orderSerialNumberList;
 
     /**
      * 商品数量
@@ -60,5 +65,10 @@ public class OrderParam {
      * 购物车列表
      */
     private List<BasketDto> basketDtoList;
+
+    /**
+     * Tag类型
+     */
+    private String tag;
 
 }

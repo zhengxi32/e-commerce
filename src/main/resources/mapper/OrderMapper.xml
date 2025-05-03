@@ -10,7 +10,8 @@
         <result column="user_id" property="userId" />
         <result column="prod_name" property="prodName" />
         <result column="prod_count" property="prodCount" />
-        <result column="order_serial_id" property="orderSerialId" />
+        <result column="prod_id" property="prodId" />
+        <result column="sku_id" property="skuId" />
         <result column="order_serial_number" property="orderSerialNumber" />
         <result column="cost" property="cost" />
         <result column="actual_cost" property="actualCost" />
@@ -36,7 +37,29 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        order_item_id, shop_id, shop_name, user_id, prod_name, prod_count, order_serial_id, order_serial_number, cost, actual_cost, addr_order_id, remarks, pay_type, status, dvy_id, dvy_type, dvy_flow_id, dvy_time, freight_amount, create_time, update_time, pay_time, finally_time, cancel_time, is_payed, is_delete, reduce_amount, close_type
+        order_item_id, shop_id, shop_name, user_id, prod_name, prod_count, prod_id, sku_id, order_serial_number, cost, actual_cost, addr_order_id, remarks, pay_type, status, dvy_id, dvy_type, dvy_flow_id, dvy_time, freight_amount, create_time, update_time, pay_time, finally_time, cancel_time, is_payed, is_delete, reduce_amount, close_type
     </sql>
+
+    <update id="batchUpdateStatus">
+        update tb_order
+        set status = 6, close_type = 1
+        where order_id in
+              <foreach collection="orderIdList" item="orderId" open="(" separator="," close=")">
+                  #{orderId}
+              </foreach>
+    </update>
+
+    <select id="existsById" resultType="java.lang.Boolean">
+        select count(*) > 0
+        from tb_order
+        where order_id = #{orderId}
+    </select>
+
+    <select id="getTimeoutOrders" resultMap="BaseResultMap">
+        select order_id, prod_count
+        from tb_order
+        where status = 0
+        and create_time &lt; now() - interval 1 day
+    </select>
 
 </mapper>

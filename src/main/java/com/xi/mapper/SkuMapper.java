@@ -34,4 +34,8 @@ public interface SkuMapper extends BaseMapper<SkuDo> {
     List<String> getSkuIdsByProdId(String prodId);
 
     SkuDo getStocksAndVersionBySkuId(String skuId);
+
+    List<SkuDo> getStocksAndVersionAll();
+
+    Integer releaseStock(@Param("skuId") String skuId, @Param("stocks") Integer stocks, @Param("version") Integer version);
 }

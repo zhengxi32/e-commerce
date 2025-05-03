@@ -3,7 +3,10 @@ package com.xi.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xi.domain.OrderDo;
 import com.xi.domain.dto.BasketDto;
+import com.xi.domain.dto.OrderDto;
 import com.xi.domain.param.OrderParam;
+
+import java.util.List;
 
 /**
  * <p>
@@ -44,5 +47,35 @@ public interface OrderService extends IService<OrderDo> {
      * @param orderParam 订单信息
      */
     void submitBasketOrderInSecKill(OrderParam orderParam);
+
+    /**
+     * 处理购物车订单消息
+     * @param basketDtoList 购物车列表
+     * @return 订单ID列表
+     */
+    List<String> createOrderAndUserAddrOrder(List<BasketDto> basketDtoList);
+
+    /**
+     * 处理单个订单消息
+     * @param orderParam 订单消息
+     * @return 订单ID
+     */
+    String createOrderAndUserAddrOrder(OrderParam orderParam);
+
+    /**
+     * 删除订单 返还优惠券信息
+     * @param orderSerialNumber 订单ID
+     */
+    void cancelOrder(List<String> orderSerialNumber);
+
+    /**
+     * 过期订单失效
+     */
+    void batchUpdateStatus(List<String> orderIdList);
+
+    /**
+     * 获取超时订单
+     */
+    List<OrderDto> getTimeoutOrders();
 
 }
