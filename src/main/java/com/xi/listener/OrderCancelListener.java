@@ -22,7 +22,7 @@ import java.util.List;
         consumerGroup = ConsumerConstant.ORDER_CANCEL_GROUP
 )
 @Slf4j
-public class OrderCancelListener implements RocketMQListener<List<OrderDto>> {=
+public class OrderCancelListener implements RocketMQListener<List<OrderDto>> {
 
     @Resource
     private OrderService orderService;
