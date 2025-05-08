@@ -1,8 +1,8 @@
 package com.xi.service;
 
-import com.xi.domain.ProdDo;
+import com.xi.entity.tb.ProdDo;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xi.domain.dto.ProdDto;
+import com.xi.entity.dto.ProdDto;
 
 /**
  * <p>

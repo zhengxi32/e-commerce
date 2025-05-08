@@ -49,14 +49,20 @@ spring:
           max-wait: -1ms
           min-idle: 0
           max-idle: 10
-
-
   kafka:
     bootstrap-servers: localhost:9092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
       acks: all
+
+rocketmq:
+  name-server: 127.0.0.1:9876
+  producer:
+    group: e-commerce-producer-group
+    send-message-timeout: 3000
+    retry-times-when-send-failed: 2
+    retry-times-when-send-async-failed: 2
 
 server:
   port: 5200
@@ -74,3 +80,17 @@ logging:
       alibaba:
         otter:
           canal: DEBUG
+
+canal:
+  enable: true
+  server: canal-server:11111
+  destination: e-commerce
+  process:
+    internal: 100
+    batch-size: 1000
+
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true

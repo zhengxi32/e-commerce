@@ -1,8 +1,8 @@
 package com.xi.service;
 
-import com.xi.domain.UserAddrDo;
+import com.xi.entity.tb.UserAddrDo;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xi.domain.dto.UserAddrDto;
+import com.xi.entity.dto.UserAddrDto;
 
 /**
  * <p>

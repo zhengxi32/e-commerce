@@ -1,8 +1,8 @@
 package com.xi.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xi.domain.SkuDo;
-import com.xi.domain.dto.SkuDto;
+import com.xi.entity.tb.SkuDo;
+import com.xi.entity.dto.SkuDto;
 
 import java.util.List;
 

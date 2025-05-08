@@ -1,7 +1,7 @@
 package com.xi.convert;
 
-import com.xi.domain.ShopDo;
-import com.xi.domain.dto.ShopDto;
+import com.xi.entity.tb.ShopDo;
+import com.xi.entity.dto.ShopDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

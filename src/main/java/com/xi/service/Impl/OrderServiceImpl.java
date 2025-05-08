@@ -5,15 +5,15 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xi.constant.RedisConstant;
-import com.xi.constant.TagConstant;
+import com.xi.constant.OrderTagConstant;
 import com.xi.constant.TopicConstant;
 import com.xi.convert.OrderConvert;
-import com.xi.domain.OrderDo;
-import com.xi.domain.UserAddrOrderDo;
-import com.xi.domain.dto.BasketDto;
-import com.xi.domain.dto.OrderDto;
-import com.xi.domain.dto.UserAddrDto;
-import com.xi.domain.param.OrderParam;
+import com.xi.entity.tb.OrderDo;
+import com.xi.entity.tb.UserAddrOrderDo;
+import com.xi.entity.dto.BasketDto;
+import com.xi.entity.dto.OrderDto;
+import com.xi.entity.dto.UserAddrDto;
+import com.xi.entity.param.OrderParam;
 import com.xi.enums.ResponseCodeEnum;
 import com.xi.exception.BizException;
 import com.xi.mapper.OrderMapper;
@@ -76,12 +76,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
         // 创建订单
         String orderSerialNumber = createOrderAndUserAddrOrder(orderParam);
         orderParam.setOrderSerialNumberList(Collections.singletonList(orderSerialNumber));
-        orderParam.setTag(TagConstant.ORDER_TAG_DIRECT_PURCHASE);
+        orderParam.setTag(OrderTagConstant.ORDER_TAG_DIRECT_PURCHASE);
 
         // 发送半事务消息
         rocketMQTemplate.sendMessageInTransaction(
                 TopicConstant.ORDER_CREATE_TOPIC,
-                MessageBuilder.withPayload(orderParam).setHeader(MessageConst.PROPERTY_TAGS, TagConstant.ORDER_TAG_DIRECT_PURCHASE).build(),
+                MessageBuilder.withPayload(orderParam).setHeader(MessageConst.PROPERTY_TAGS, OrderTagConstant.ORDER_TAG_DIRECT_PURCHASE).build(),
                 null
         );
 
@@ -102,12 +102,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
         // 创建订单
         List<String> orderSerialNumberList = createOrderAndUserAddrOrder(basketDtoList);
         orderParam.setOrderSerialNumberList(orderSerialNumberList);
-        orderParam.setTag(TagConstant.ORDER_TAG_BASKET_PURCHASE);
+        orderParam.setTag(OrderTagConstant.ORDER_TAG_BASKET_PURCHASE);
 
         // 发送半事务消息
         rocketMQTemplate.sendMessageInTransaction(
                 TopicConstant.ORDER_CREATE_TOPIC,
-                MessageBuilder.withPayload(orderParam).setHeader(MessageConst.PROPERTY_TAGS, TagConstant.ORDER_TAG_BASKET_PURCHASE).build(),
+                MessageBuilder.withPayload(orderParam).setHeader(MessageConst.PROPERTY_TAGS, OrderTagConstant.ORDER_TAG_BASKET_PURCHASE).build(),
                 null
         );
 
@@ -116,6 +116,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void submitOrderInSecKill(OrderParam orderParam) {
+        // 创建订单
+        String orderSerialNumber = createOrderAndUserAddrOrder(orderParam);
+        orderParam.setOrderSerialNumberList(Collections.singletonList(orderSerialNumber));
+        orderParam.setTag(OrderTagConstant.ORDER_TAG_SEC_KILL_DIRECT_PURCHASE);
+
         // Redis原子扣减
         RScript script = redissonClient.getScript();
 
@@ -146,15 +151,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
             throw new BizException(ResponseCodeEnum.STOCKS_NOT_ENOUGH);
         }
 
-        // 创建订单
-        String orderSerialNumber = createOrderAndUserAddrOrder(orderParam);
-        orderParam.setOrderSerialNumberList(Collections.singletonList(orderSerialNumber));
-        orderParam.setTag(TagConstant.ORDER_TAG_SEC_KILL_DIRECT_PURCHASE);
-
         // 发送半事务消息
         rocketMQTemplate.sendMessageInTransaction(
                 TopicConstant.ORDER_CREATE_TOPIC,
-                MessageBuilder.withPayload(orderParam).setHeader(MessageConst.PROPERTY_TAGS, TagConstant.ORDER_TAG_SEC_KILL_DIRECT_PURCHASE).build(),
+                MessageBuilder.withPayload(orderParam).setHeader(MessageConst.PROPERTY_TAGS, OrderTagConstant.ORDER_TAG_SEC_KILL_DIRECT_PURCHASE).build(),
                 null
         );
 
@@ -197,12 +197,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
 
         List<String> orderSerialNumberList = createOrderAndUserAddrOrder(orderParam.getBasketDtoList());
         orderParam.setOrderSerialNumberList(orderSerialNumberList);
-        orderParam.setTag(TagConstant.ORDER_TAG_SEC_KILL_BASKET_PURCHASE);
+        orderParam.setTag(OrderTagConstant.ORDER_TAG_SEC_KILL_BASKET_PURCHASE);
 
         // 发送半事务消息
         rocketMQTemplate.sendMessageInTransaction(
                 TopicConstant.ORDER_CREATE_TOPIC,
-                MessageBuilder.withPayload(orderParam).setHeader(MessageConst.PROPERTY_TAGS, TagConstant.ORDER_TAG_SEC_KILL_BASKET_PURCHASE).build(),
+                MessageBuilder.withPayload(orderParam).setHeader(MessageConst.PROPERTY_TAGS, OrderTagConstant.ORDER_TAG_SEC_KILL_BASKET_PURCHASE).build(),
                 null
         );
     }
@@ -331,8 +331,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void cancelOrder(List<String> orderSerialNumberList) {
-        this.removeBatchByIds(orderSerialNumberList);
+    public void rollbackOrder(List<String> orderSerialNumberList) {
+        this.baseMapper.removeBatchByOrderSerialNumberList(orderSerialNumberList);
     }
 
     @Override
@@ -346,4 +346,5 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
         List<OrderDo> timeoutOrders = this.baseMapper.getTimeoutOrders();
         return timeoutOrders.stream().map(OrderConvert.INSTANCE::OrderDoToDto).toList();
     }
+
 }

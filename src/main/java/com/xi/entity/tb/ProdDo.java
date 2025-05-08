@@ -1,4 +1,4 @@
-package com.xi.domain;
+package com.xi.entity.tb;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -14,35 +14,25 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 商品规格表
+ * 商品表
  * </p>
  *
  * @author 郑西
- * @since 2025-04-27
+ * @since 2025-04-24
  */
 @Getter
 @Setter
 @Accessors(chain = true)
-@TableName("tb_sku")
-public class SkuDo implements Serializable {
+@TableName("tb_prod")
+public class ProdDo implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     * 单品ID
+     * 产品ID
      */
-    @TableId(value = "sku_id", type = IdType.AUTO)
-    private String skuId;
-
-    /**
-     * sku名称
-     */
-    private String skuName;
-
-    /**
-     * 商品ID
-     */
+    @TableId(value = "prod_id", type = IdType.AUTO)
     private String prodId;
 
     /**
@@ -51,49 +41,49 @@ public class SkuDo implements Serializable {
     private String prodName;
 
     /**
-     * 销售属性组合字符串 格式是p1：v1;p2：v2
+     * 店铺ID
      */
-    private String properties;
+    private String shopId;
 
     /**
-     * 价格
+     * 现价
      */
     private BigDecimal price;
 
     /**
-     * 实际库存
+     * 描述
      */
-    private Integer stocks;
+    private String brief;
 
     /**
-     * 商家编码
-     */
-    private String partyCode;
-
-    /**
-     * 商品条形码
-     */
-    private String modelId;
-
-    /**
-     * sku图片
+     * 商品主图
      */
     private String pic;
 
     /**
-     * 商品重量
+     * 商品图片，以,分割
      */
-    private Object weight;
+    private String images;
 
     /**
-     * 商品体积
-     */
-    private Object volume;
-
-    /**
-     * 0 禁用 1 启用
+     * 默认是1, 表示正常状态, 2表示下架, 3表示删除
      */
     private Boolean status;
+
+    /**
+     * 商品分类
+     */
+    private String categoryId;
+
+    /**
+     * 销量
+     */
+    private Integer soldNum;
+
+    /**
+     * 总库存
+     */
+    private Integer totalStocks;
 
     /**
      * 录入时间
@@ -104,6 +94,11 @@ public class SkuDo implements Serializable {
      * 修改时间
      */
     private LocalDateTime updateTime;
+
+    /**
+     * 上架时间
+     */
+    private LocalDateTime putawayTime;
 
     /**
      * 版本号

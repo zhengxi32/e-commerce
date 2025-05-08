@@ -1,8 +1,8 @@
 package com.xi.mapper;
 
-import com.xi.domain.UserAddrDo;
+import com.xi.entity.tb.UserAddrDo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xi.domain.dto.UserAddrDto;
+import com.xi.entity.dto.UserAddrDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

@@ -1,6 +1,6 @@
 package com.xi.mapper;
 
-import com.xi.domain.UserAddrOrderDo;
+import com.xi.entity.tb.UserAddrOrderDo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

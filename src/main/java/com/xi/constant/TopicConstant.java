@@ -28,7 +28,7 @@ public class TopicConstant {
     public static final String STOCK_RELEASE_TOPIC = "STOCK_RELEASE_TOPIC";
 
     /**
-     * 库存同步主题
+     * SKU库存同步主题
      */
-    public static final String CACHE_STOCK_SYNC = "CACHE_STOCK_SYNC";
+    public static final String SKU_CACHE_STOCK_SYNC = "SKU_CACHE_STOCK_SYNC";
 }

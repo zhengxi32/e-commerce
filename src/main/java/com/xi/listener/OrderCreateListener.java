@@ -1,6 +1,6 @@
 package com.xi.listener;
 
-import com.xi.domain.param.OrderParam;
+import com.xi.entity.param.OrderParam;
 import com.xi.mapper.OrderMapper;
 import jakarta.annotation.Resource;
 import org.apache.rocketmq.spring.annotation.RocketMQTransactionListener;

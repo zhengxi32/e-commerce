@@ -1,6 +1,6 @@
 package com.xi.constant;
 
-public class TagConstant {
+public class OrderTagConstant {
 
     /**
      * 直接下单

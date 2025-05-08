@@ -1,8 +1,8 @@
 package com.xi.mapper;
 
-import com.xi.domain.BasketDo;
+import com.xi.entity.tb.BasketDo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xi.domain.dto.BasketDto;
+import com.xi.entity.dto.BasketDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

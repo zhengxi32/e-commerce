@@ -1,7 +1,7 @@
 package com.xi.scheduler;
 
 import com.xi.constant.TopicConstant;
-import com.xi.domain.dto.OrderDto;
+import com.xi.entity.dto.OrderDto;
 import com.xi.service.OrderService;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import jakarta.annotation.Resource;
@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

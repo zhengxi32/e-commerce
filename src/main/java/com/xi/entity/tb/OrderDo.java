@@ -1,29 +1,44 @@
-package com.xi.domain.dto;
+package com.xi.entity.tb;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import lombok.Data;
+import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
-@Data
-public class OrderDto implements Serializable {
+/**
+ * <p>
+ * 订单表
+ * </p>
+ *
+ * @author 郑西
+ * @since 2025-04-29
+ */
+@Getter
+@Setter
+@Accessors(chain = true)
+@TableName("tb_order")
+public class OrderDo implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     * 订单ID
+     * 订单项ID
      */
-    private String orderId;
+    @TableId(value = "order_item_id", type = IdType.AUTO)
+    private Long orderItemId;
 
     /**
      * 店铺Id
      */
-    private String shopId;
+    private Long shopId;
 
     /**
      * 店铺名称
@@ -56,7 +71,7 @@ public class OrderDto implements Serializable {
     private String skuId;
 
     /**
-     * 订购流水号
+     * 订单流水号
      */
     private String orderSerialNumber;
 

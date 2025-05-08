@@ -3,7 +3,7 @@
 <mapper namespace="com.xi.mapper.UserAddrMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.xi.domain.UserAddrDo">
+    <resultMap id="BaseResultMap" type="com.xi.entity.tb.UserAddrDo">
         <id column="addr_id" property="addrId" />
         <result column="user_id" property="userId" />
         <result column="receiver" property="receiver" />

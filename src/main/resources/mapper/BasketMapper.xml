@@ -3,7 +3,7 @@
 <mapper namespace="com.xi.mapper.BasketMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.xi.domain.BasketDo">
+    <resultMap id="BaseResultMap" type="com.xi.entity.tb.BasketDo">
         <id column="basket_id" property="basketId" />
         <result column="shop_id" property="shopId" />
         <result column="prod_id" property="prodId" />

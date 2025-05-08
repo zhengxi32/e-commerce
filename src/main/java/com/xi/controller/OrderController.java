@@ -1,7 +1,7 @@
 package com.xi.controller;
 
 import com.xi.common.Response;
-import com.xi.domain.param.OrderParam;
+import com.xi.entity.param.OrderParam;
 import com.xi.service.OrderService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.PostMapping;

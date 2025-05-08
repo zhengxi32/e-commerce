@@ -1,6 +1,6 @@
 package com.xi.service;
 
-import com.xi.domain.UserDo;
+import com.xi.entity.tb.UserDo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

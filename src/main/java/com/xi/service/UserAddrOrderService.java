@@ -1,6 +1,6 @@
 package com.xi.service;
 
-import com.xi.domain.UserAddrOrderDo;
+import com.xi.entity.tb.UserAddrOrderDo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

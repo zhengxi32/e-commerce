@@ -3,27 +3,21 @@ package com.xi.service.Impl;
 import com.xi.annotation.RedisLock;
 import com.xi.constant.RedisConstant;
 import com.xi.convert.SkuConvert;
-import com.xi.domain.SkuDo;
-import com.xi.domain.dto.SkuDto;
+import com.xi.entity.tb.SkuDo;
+import com.xi.entity.dto.SkuDto;
 import com.xi.enums.ResponseCodeEnum;
 import com.xi.exception.BizException;
 import com.xi.mapper.SkuMapper;
 import com.xi.service.SkuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
-import org.redisson.api.RBucket;
 import org.redisson.api.RMap;
-import org.redisson.api.RSet;
 import org.redisson.api.RedissonClient;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**

@@ -1,15 +1,14 @@
 package com.xi.mapper;
 
-import com.xi.domain.SkuDo;
+import com.xi.entity.tb.SkuDo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xi.domain.dto.SkuDto;
+import com.xi.entity.dto.SkuDto;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * <p>

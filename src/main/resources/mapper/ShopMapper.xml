@@ -3,7 +3,7 @@
 <mapper namespace="com.xi.mapper.ShopMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.xi.domain.ShopDo">
+    <resultMap id="BaseResultMap" type="com.xi.entity.tb.ShopDo">
         <id column="shop_id" property="shopId" />
         <result column="shop_name" property="shopName" />
         <result column="user_id" property="userId" />

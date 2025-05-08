@@ -1,15 +1,11 @@
 package com.xi.service.Impl;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import com.xi.constant.SystemConstant;
-import com.xi.domain.BasketDo;
-import com.xi.domain.ProdDo;
-import com.xi.domain.dto.BasketDto;
-import com.xi.domain.dto.ProdDto;
-import com.xi.domain.dto.SkuDto;
-import com.xi.enums.ResponseCodeEnum;
-import com.xi.exception.BizException;
+import com.xi.entity.tb.BasketDo;
+import com.xi.entity.dto.BasketDto;
+import com.xi.entity.dto.ProdDto;
+import com.xi.entity.dto.SkuDto;
 import com.xi.mapper.BasketMapper;
 import com.xi.service.BasketService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -20,8 +16,6 @@ import jakarta.annotation.Resource;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 

@@ -3,7 +3,7 @@
 <mapper namespace="com.xi.mapper.OrderMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.xi.domain.OrderDo">
+    <resultMap id="BaseResultMap" type="com.xi.entity.tb.OrderDo">
         <id column="order_item_id" property="orderItemId" />
         <result column="shop_id" property="shopId" />
         <result column="shop_name" property="shopName" />
@@ -48,6 +48,14 @@
                   #{orderId}
               </foreach>
     </update>
+
+    <delete id="removeBatchByOrderSerialNumberList">
+        delete from tb_order
+        where order_serial_number in
+        <foreach collection="orderSerialNumberList" item="items" open="(" separator="," close=")">
+            #{items}
+        </foreach>
+    </delete>
 
     <select id="existsById" resultType="java.lang.Boolean">
         select count(*) > 0

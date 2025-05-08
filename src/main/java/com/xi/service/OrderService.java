@@ -1,10 +1,10 @@
 package com.xi.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xi.domain.OrderDo;
-import com.xi.domain.dto.BasketDto;
-import com.xi.domain.dto.OrderDto;
-import com.xi.domain.param.OrderParam;
+import com.xi.entity.tb.OrderDo;
+import com.xi.entity.dto.BasketDto;
+import com.xi.entity.dto.OrderDto;
+import com.xi.entity.param.OrderParam;
 
 import java.util.List;
 
@@ -63,10 +63,10 @@ public interface OrderService extends IService<OrderDo> {
     String createOrderAndUserAddrOrder(OrderParam orderParam);
 
     /**
-     * 删除订单 返还优惠券信息
+     * 购物车下单失败场景 回滚订单 返还优惠券信息
      * @param orderSerialNumber 订单ID
      */
-    void cancelOrder(List<String> orderSerialNumber);
+    void rollbackOrder(List<String> orderSerialNumber);
 
     /**
      * 过期订单失效

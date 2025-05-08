@@ -2,8 +2,8 @@ package com.xi.service.Impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xi.convert.ProdConvert;
-import com.xi.domain.ProdDo;
-import com.xi.domain.dto.ProdDto;
+import com.xi.entity.tb.ProdDo;
+import com.xi.entity.dto.ProdDto;
 import com.xi.mapper.ProdMapper;
 import com.xi.service.ProdService;
 import org.springframework.cache.annotation.Cacheable;

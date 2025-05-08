@@ -1,8 +1,8 @@
 package com.xi.service.Impl;
 
 import com.xi.convert.ShopConvert;
-import com.xi.domain.ShopDo;
-import com.xi.domain.dto.ShopDto;
+import com.xi.entity.tb.ShopDo;
+import com.xi.entity.dto.ShopDto;
 import com.xi.mapper.ShopMapper;
 import com.xi.service.ShopService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

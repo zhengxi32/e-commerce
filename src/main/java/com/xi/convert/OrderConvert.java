@@ -1,8 +1,8 @@
 package com.xi.convert;
 
-import com.xi.domain.OrderDo;
-import com.xi.domain.dto.OrderDto;
-import com.xi.domain.param.OrderParam;
+import com.xi.entity.tb.OrderDo;
+import com.xi.entity.dto.OrderDto;
+import com.xi.entity.param.OrderParam;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

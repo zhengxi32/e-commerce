@@ -2,7 +2,7 @@ package com.xi.listener;
 
 import com.xi.constant.ConsumerConstant;
 import com.xi.constant.TopicConstant;
-import com.xi.domain.dto.OrderDto;
+import com.xi.entity.dto.OrderDto;
 import com.xi.service.SkuService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +42,7 @@ public class StockReleaseListener implements RocketMQListener<List<OrderDto>> {
             skuService.releaseStock(entry.getKey(), entry.getValue());
         }
         log.info("释放库存成功，执行完成时间: {}", LocalDateTime.now());
-        rocketMQTemplate.asyncSend(TopicConstant.CACHE_STOCK_SYNC, orderDtoList, new SendCallback() {
+        rocketMQTemplate.asyncSend(TopicConstant.SKU_CACHE_STOCK_SYNC, orderDtoList, new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
                 log.info("发送缓存同步消息成功，发送时间: {}", LocalDateTime.now());

@@ -1,8 +1,7 @@
 package com.xi.mapper;
 
-import com.xi.domain.ProdDo;
+import com.xi.entity.tb.ProdDo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xi.domain.dto.ProdDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

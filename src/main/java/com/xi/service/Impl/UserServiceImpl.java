@@ -1,6 +1,6 @@
 package com.xi.service.Impl;
 
-import com.xi.domain.UserDo;
+import com.xi.entity.tb.UserDo;
 import com.xi.mapper.UserMapper;
 import com.xi.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

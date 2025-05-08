@@ -1,6 +1,6 @@
 package com.xi.mapper;
 
-import com.xi.domain.OrderDo;
+import com.xi.entity.tb.OrderDo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -23,4 +23,6 @@ public interface OrderMapper extends BaseMapper<OrderDo> {
     void batchUpdateStatus(@Param("orderIdList") List<String> orderIdList);
 
     List<OrderDo> getTimeoutOrders();
+
+    void removeBatchByOrderSerialNumberList(List<String> orderSerialNumberList);
 }

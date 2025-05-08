@@ -1,6 +1,6 @@
-package com.xi.domain.param;
+package com.xi.entity.param;
 
-import com.xi.domain.dto.BasketDto;
+import com.xi.entity.dto.BasketDto;
 import lombok.Data;
 
 import java.util.List;

@@ -2,7 +2,7 @@ package com.xi.listener;
 
 import com.xi.constant.ConsumerConstant;
 import com.xi.constant.TopicConstant;
-import com.xi.domain.dto.OrderDto;
+import com.xi.entity.dto.OrderDto;
 import com.xi.service.OrderService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.xi.domain.dto;
+package com.xi.entity.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
