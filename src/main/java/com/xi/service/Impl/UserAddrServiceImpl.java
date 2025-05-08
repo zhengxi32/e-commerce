@@ -22,14 +22,12 @@ import org.springframework.stereotype.Service;
 public class UserAddrServiceImpl extends ServiceImpl<UserAddrMapper, UserAddrDo> implements UserAddrService {
 
     @Override
-    @Cacheable(cacheNames = "UserAddr", key = "#userId + ':' + #addrId")
     public UserAddrDto getUserAddrDtoByUserIdAndAddrId(String userId, String addrId) {
         UserAddrDo userAddrDo = this.baseMapper.getUserAddrByUserIdAndAddrId(userId, addrId);
         return UserAddrConvert.INSTANCE.UserAddrDoToDto(userAddrDo);
     }
 
     @Override
-    @Cacheable(cacheNames = "UserAddrDtoCommon", key = "#userId")
     public UserAddrDto getCommonAddr(String userId) {
         UserAddrDto commonAddr = this.baseMapper.getCommonAddr(userId);
         return ObjUtil.isEmpty(commonAddr) ? this.baseMapper.getRecentAddr(userId) : commonAddr;

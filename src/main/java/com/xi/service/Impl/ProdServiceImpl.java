@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 public class ProdServiceImpl extends ServiceImpl<ProdMapper, ProdDo> implements ProdService {
 
     @Override
-    @Cacheable(cacheNames = "prodDto", key = "#prodId")
     public ProdDto getProdDtoByProdId(String prodId) {
         ProdDo prodDo = this.baseMapper.getProdDtoByProdId(prodId);
         return ProdConvert.INSTANCE.ProdDoToDto(prodDo);

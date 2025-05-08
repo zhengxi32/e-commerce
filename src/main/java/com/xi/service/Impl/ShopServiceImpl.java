@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 public class ShopServiceImpl extends ServiceImpl<ShopMapper, ShopDo> implements ShopService {
 
     @Override
-    @Cacheable(value = "shopDto", key = "#shopId")
     public ShopDto getShopDtoByShopId(String shopId) {
         ShopDo shopDo = this.baseMapper.getShopDtoByShopId(shopId);
         return ShopConvert.INSTANCE.ShopDoToShopDto(shopDo);

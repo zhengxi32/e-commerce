@@ -38,7 +38,6 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, SkuDo> implements Sku
     private RedissonClient redissonClient;
 
     @Override
-    @Cacheable(cacheNames = "SkuDto", key = "#skuId")
     public SkuDto getSkuDtoBySkuId(String skuId) {
         SkuDo skuDo = this.baseMapper.getSkuDoBySkuId(skuId);
         return SkuConvert.INSTANCE.SkuDoToDto(skuDo);
