@@ -8,7 +8,7 @@ import java.util.concurrent.*;
 @Configuration
 public class ThreadPoolConfig {
 
-    @Bean(name = "secKillStockDeductThreadPool")
+    @Bean(name = "secKillStockDecreaseThreadPool")
     public ThreadPoolExecutor threadPoolExecutor() {
         return new ThreadPoolExecutor(
                 4,

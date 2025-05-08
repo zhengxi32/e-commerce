@@ -41,7 +41,9 @@ public class StockDecreaseListener implements RocketMQListener<OrderParam> {
 
     @Override
     public void onMessage(OrderParam orderParam) {
+        // 根据订单类型获取对应的库存扣减策略
         StockDecreaseStrategy stockDecreaseStrategy = orderStrategyFactory.getStrategy(orderParam.getTag());
-
+        // 扣减库存
+        stockDecreaseStrategy.decreaseStock(orderParam);
     }
 }

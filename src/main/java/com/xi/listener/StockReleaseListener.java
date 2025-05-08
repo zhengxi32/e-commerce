@@ -34,6 +34,7 @@ public class StockReleaseListener implements RocketMQListener<List<OrderDto>> {
 
     @Override
     public void onMessage(List<OrderDto> orderDtoList) {
+        log.info("释放库存开始，执行开始时间: {}", LocalDateTime.now());
         Map<String, Integer> skuIdMap = new HashMap<>();
         orderDtoList.forEach(orderDto -> {
             skuIdMap.merge(orderDto.getSkuId(), orderDto.getProdCount(), Integer::sum);

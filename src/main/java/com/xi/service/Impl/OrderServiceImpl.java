@@ -68,7 +68,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
     @Resource
     private RocketMQTemplate rocketMQTemplate;
 
-    @Resource(name = "secKillStockDeductThreadPool")
+    @Resource(name = "secKillStockDecreaseThreadPool")
     private ExecutorService executorService;
 
     @Override
