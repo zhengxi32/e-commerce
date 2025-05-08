@@ -47,6 +47,7 @@ import java.util.stream.Collectors;
  * @since 2025-04-28
  */
 @Service
+@Transactional
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implements OrderService {
 
     @Resource
@@ -70,7 +71,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
     @Resource(name = "secKillStockDeductThreadPool")
     private ExecutorService executorService;
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public void SubmitOrder(OrderParam orderParam) {
         // 创建订单
@@ -88,7 +88,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void submitBasketOrder(OrderParam orderParam) {
         List<BasketDto> basketDtoList = orderParam.getBasketDtoList();
 
@@ -114,7 +113,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void submitOrderInSecKill(OrderParam orderParam) {
         // 创建订单
         String orderSerialNumber = createOrderAndUserAddrOrder(orderParam);
@@ -161,7 +159,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void submitBasketOrderInSecKill(OrderParam orderParam) {
         // 获取购物车列表
         List<BasketDto> basketDtoList = orderParam.getBasketDtoList();
@@ -273,7 +270,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
         private BasketDto basketDto;
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public List<String> createOrderAndUserAddrOrder(List<BasketDto> basketDtoList) {
         Map<String, List<BasketDto>> basketDtoMap = basketDtoList.stream().collect(Collectors.groupingBy(BasketDto::getShopId));
@@ -298,7 +294,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
         return idList;
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public String createOrderAndUserAddrOrder(OrderParam orderParam) {
         String orderSerialNumber = IdUtil.getSnowflake().nextIdStr();
@@ -330,13 +325,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void rollbackOrder(List<String> orderSerialNumberList) {
+        // This line calls the baseMapper to remove the order from the database
         this.baseMapper.removeBatchByOrderSerialNumberList(orderSerialNumberList);
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void batchUpdateStatus(List<String> orderIdList) {
         this.baseMapper.batchUpdateStatus(orderIdList);
     }

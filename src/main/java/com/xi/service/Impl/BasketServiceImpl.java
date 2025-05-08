@@ -39,8 +39,6 @@ public class BasketServiceImpl extends ServiceImpl<BasketMapper, BasketDo> imple
     @Resource
     private ShopService shopService;
 
-
-
     @Override
     @Cacheable(cacheNames = "BasketDtoList", key = "#userId")
     public List<BasketDto> getBasketListByUserId(String userId) {
