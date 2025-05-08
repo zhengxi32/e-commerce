@@ -47,7 +47,7 @@ public class TableProcessorRouterFactory {
         return annotationCache.get(processor).topic();
     }
 
-    public String getRoutingKeyField(TableProcessor processor) {
+    public String getRoutingKey(TableProcessor processor) {
         return annotationCache.get(processor).routingKey();
     }
 }

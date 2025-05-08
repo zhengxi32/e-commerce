@@ -86,11 +86,9 @@ canal:
   server: canal-server:11111
   destination: e-commerce
   process:
-    internal: 100
-    batch-size: 1000
-
-management:
-  metrics:
-    export:
-      prometheus:
-        enabled: true
+    interval: 100
+  batch:
+    size: 1000
+  subscribe: commerce\\.tb_sku
+  username: canal
+  password: canal
