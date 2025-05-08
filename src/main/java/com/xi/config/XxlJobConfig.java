@@ -15,31 +15,23 @@ public class XxlJobConfig {
     @Value("${xxl.job.admin.addresses}")
     private String adminAddresses;
 
-    @Value("${xxl.job.accessToken}")
+    @Value("${xxl.job.access-token}")
     private String accessToken;
-
-    @Value("${xxl.job.executor.appname}")
-    private String appname;
 
     @Value("${server.port}")
     private int port;
 
-    @Value("${xxl.job.executor.logpath}")
+    @Value("${xxl.job.log-path}")
     private String logPath;
-
-    @Value("${xxl.job.executor.logretentiondays}")
-    private int logRetentionDays;
 
     @Bean
     public XxlJobSpringExecutor xxlJobExecutor() {
         logger.info("XxlJob 初始化成功");
         XxlJobSpringExecutor xxlJobSpringExecutor = new XxlJobSpringExecutor();
         xxlJobSpringExecutor.setAdminAddresses(adminAddresses);
-        xxlJobSpringExecutor.setAppname(appname);
         xxlJobSpringExecutor.setPort(port);
         xxlJobSpringExecutor.setAccessToken(accessToken);
         xxlJobSpringExecutor.setLogPath(logPath);
-        xxlJobSpringExecutor.setLogRetentionDays(logRetentionDays);
 
         return xxlJobSpringExecutor;
     }

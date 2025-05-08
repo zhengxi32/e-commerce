@@ -79,7 +79,7 @@ logging:
     com:
       alibaba:
         otter:
-          canal: DEBUG
+          canal: INFO
 
 canal:
   enable: true
@@ -92,3 +92,11 @@ canal:
   subscribe: commerce\\.tb_sku
   username: canal
   password: canal
+
+xxl:
+  job:
+    admin:
+      addresses: http://127.0.0.1:8080/xxl-job-admin
+    access-token: default-token
+    log-path: /data/app/logs/xxl-job/jobHandler
+

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Configuration
-@Import(CanalConfig.class)
+@Import(CanalConnectorConfig.class)
 public class CanalConfig {
     private static final Logger log = LoggerFactory.getLogger(CanalConfig.class);
 
