@@ -31,9 +31,10 @@
         update tb_sku set stocks = stocks - #{stocks}, version = version + 1 where sku_id = #{skuId} and stocks &gt;= #{stocks}
     </update>
 
-    <update id="updateStocksLock">
+    <select id="updateStocksLock" resultType="com.xi.entity.tb.SkuDo">
         update tb_sku set stocks = stocks - #{stocks}, version = version + 1 where sku_id = #{skuId} and stocks &gt;= #{stocks} and version = #{version}
-    </update>
+        RETURNING stocks as after_stocks, version as after_version
+    </select>
 
     <update id="releaseStock">
         update tb_sku set stocks = stocks + #{stocks}, version = version + 1 where sku_id = #{skuId} and version = #{version}

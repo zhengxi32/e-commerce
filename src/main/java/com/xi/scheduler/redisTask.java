@@ -27,7 +27,7 @@ public class redisTask {
 
     @XxlJob("stockRefresh")
     public void stockRefresh() {
-        log.info("库存同步定时任务开始执行，执行时间: {}", LocalDateTime.now());
+        log.info("The stocks synchronization scheduled task has started to execute {}", LocalDateTime.now());
         // 获取所有库存和版本信息
         List<SkuDto> stocksAndVersionAll = skuService.getStocksAndVersionAll();
         // 遍历所有库存和版本信息
@@ -48,7 +48,7 @@ public class redisTask {
                         rMap.put(version, skuDto.getVersion());
                         rMap.put(stocks, skuDto.getStocks());
                     }
-                } else log.warn("sku {} 库存同步失败，请重试", skuDto.getSkuId());
+                } else log.warn("sku {} stocks synchronization failed, {}", skuDto.getSkuId(), LocalDateTime.now());
 
             } catch (Exception e) {
                 Thread.currentThread().interrupt();

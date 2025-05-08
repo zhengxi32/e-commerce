@@ -1,8 +1,11 @@
 package com.xi.service.Impl;
 
+import cn.hutool.core.util.ObjUtil;
 import com.xi.annotation.RedisLock;
 import com.xi.constant.RedisConstant;
 import com.xi.convert.SkuConvert;
+import com.xi.entity.dto.BasketDto;
+import com.xi.entity.param.OrderParam;
 import com.xi.entity.tb.SkuDo;
 import com.xi.entity.dto.SkuDto;
 import com.xi.enums.ResponseCodeEnum;
@@ -43,9 +46,33 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, SkuDo> implements Sku
 
     @Override
     public Boolean updateStocksLock(String skuId, Integer stocks, Integer skuVersion) {
-        Integer result = this.baseMapper.updateStocksLock(skuId, stocks, skuVersion);
+        SkuDo skuDo = this.baseMapper.updateStocksLock(skuId, stocks, skuVersion);
 
-        return result == 0 ? Boolean.FALSE : Boolean.TRUE;
+        return ObjUtil.isEmpty(skuDo) ? Boolean.FALSE : Boolean.TRUE;
+    }
+
+    @Override
+    public Boolean updateStocksLock(OrderParam orderParam, Integer skuVersion) {
+        SkuDo skuDo = this.baseMapper.updateStocksLock(orderParam.getSkuId(), orderParam.getProdCount(), skuVersion);
+        if (ObjUtil.isEmpty(skuDo)) {
+            return Boolean.FALSE;
+        }
+        orderParam.setAfterStocks(skuDo.getAfterStocks());
+        orderParam.setAfterVersion(skuDo.getAfterVersion());
+
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public Boolean updateStocksLock(BasketDto basketDto, Integer skuVersion) {
+        SkuDo skuDo = this.baseMapper.updateStocksLock(basketDto.getSkuId(), basketDto.getStocks(), skuVersion);
+        if (ObjUtil.isEmpty(skuDo)) {
+            return Boolean.FALSE;
+        }
+        basketDto.setAfterStocks(skuDo.getAfterStocks());
+        basketDto.setAfterVersion(skuDo.getAfterVersion());
+
+        return Boolean.TRUE;
     }
 
     @Override

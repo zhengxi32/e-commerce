@@ -41,20 +41,20 @@ public class MultiLevelCache implements Cache {
         // 1. 先查一级缓存
         ValueWrapper value = caffeineCache.get(key);
         if (value != null) {
-            log.debug("[Caffeine] 命中缓存 key: {}", key);
+            log.debug("[Caffeine] Hit the cache, key: {}", key);
             return value;
         }
 
         // 2. 查二级缓存
         value = redisCache.get(key);
         if (value != null) {
-            log.debug("[Redis] 命中缓存 key: {}", key);
+            log.debug("[Redis] Hit the cache key: {}", key);
             // 回填一级缓存
             caffeineCache.put(key, value.get());
             return value;
         }
 
-        log.debug("缓存未命中 key: {}", key);
+        log.debug("Cache miss, key: {}", key);
         return null;
     }
 
@@ -108,7 +108,7 @@ public class MultiLevelCache implements Cache {
         redisCache.put(key, value);
         // 再写Caffeine提升后续访问速度
         caffeineCache.put(key, value);
-        log.debug("写入多级缓存 key: {}", key);
+        log.debug("Cache writing, key: {}", key);
     }
 
     /**
@@ -120,7 +120,7 @@ public class MultiLevelCache implements Cache {
         redisCache.evict(key);
         // 再删Caffeine
         caffeineCache.evict(key);
-        log.debug("删除缓存 key: {}", key);
+        log.debug("Delete cache key: {}", key);
     }
 
     /**
@@ -132,7 +132,7 @@ public class MultiLevelCache implements Cache {
         redisCache.clear();
         // 再清Caffeine
         caffeineCache.clear();
-        log.debug("清空所有缓存");
+        log.debug("Clear all caches");
     }
 
     /**

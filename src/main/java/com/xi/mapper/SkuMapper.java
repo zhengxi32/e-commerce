@@ -25,7 +25,7 @@ public interface SkuMapper extends BaseMapper<SkuDo> {
 
     SkuDo getSkuDoBySkuId(@Param("skuId") String skuId);
 
-    Integer updateStocksLock(@Param("skuId") String skuId, @Param("stocks") Integer stocks, @Param("version") Integer version);
+    SkuDo updateStocksLock(@Param("skuId") String skuId, @Param("stocks") Integer stocks, @Param("version") Integer version);
 
     @MapKey("skuId")
     Map<String, SkuDto> getStocksAndVersionByProdId(String prodId);

@@ -34,7 +34,7 @@ public class StockReleaseListener implements RocketMQListener<List<OrderDto>> {
 
     @Override
     public void onMessage(List<OrderDto> orderDtoList) {
-        log.info("释放库存开始，执行开始时间: {}", LocalDateTime.now());
+        log.info("Stocks release begins {}", LocalDateTime.now());
         Map<String, Integer> skuIdMap = new HashMap<>();
         orderDtoList.forEach(orderDto -> {
             skuIdMap.merge(orderDto.getSkuId(), orderDto.getProdCount(), Integer::sum);
@@ -42,17 +42,7 @@ public class StockReleaseListener implements RocketMQListener<List<OrderDto>> {
         for (Map.Entry<String, Integer> entry : skuIdMap.entrySet()) {
             skuService.releaseStock(entry.getKey(), entry.getValue());
         }
-        log.info("释放库存成功，执行完成时间: {}", LocalDateTime.now());
-        rocketMQTemplate.asyncSend(TopicConstant.SKU_CACHE_STOCK_SYNC, orderDtoList, new SendCallback() {
-            @Override
-            public void onSuccess(SendResult sendResult) {
-                log.info("发送缓存同步消息成功，发送时间: {}", LocalDateTime.now());
-            }
-
-            @Override
-            public void onException(Throwable e) {
-                log.warn("发送缓存同步消息失败，e", e);
-            }
-        });
+        log.info("The stocks release was successfully executed {}", LocalDateTime.now());
+        rocketMQTemplate.syncSend(TopicConstant.SKU_CACHE_STOCK_SYNC, orderDtoList);
     }
 }

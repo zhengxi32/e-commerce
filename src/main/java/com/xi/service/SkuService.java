@@ -1,8 +1,10 @@
 package com.xi.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xi.entity.tb.SkuDo;
+import com.xi.entity.dto.BasketDto;
 import com.xi.entity.dto.SkuDto;
+import com.xi.entity.param.OrderParam;
+import com.xi.entity.tb.SkuDo;
 
 import java.util.List;
 
@@ -34,6 +36,24 @@ public interface SkuService extends IService<SkuDo> {
     Boolean updateStocksLock(String skuId, Integer stocks, Integer skuVersion);
 
     /**
+     * 单个下单场景
+     *
+     * @param orderParam 订单参数
+     * @param skuVersion sku版本号
+     * @return 更新结果
+     */
+    Boolean updateStocksLock(OrderParam orderParam, Integer skuVersion);
+
+    /**
+     * 购物车场景
+     *
+     * @param basketDto  购物车参数
+     * @param skuVersion sku版本号
+     * @return 更新结果
+     */
+    Boolean updateStocksLock(BasketDto basketDto, Integer skuVersion);
+
+    /**
      * 根据SkuId查询库存与版本号信息
      *
      * @param skuId skuID
@@ -49,7 +69,8 @@ public interface SkuService extends IService<SkuDo> {
 
     /**
      * 释放商品库存
-     * @param skuId 单品ID
+     *
+     * @param skuId  单品ID
      * @param stocks 库存数量
      */
     void releaseStock(String skuId, Integer stocks);

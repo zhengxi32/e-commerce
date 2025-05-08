@@ -37,16 +37,6 @@ public class OrderCancelListener implements RocketMQListener<List<OrderDto>> {
         orderService.batchUpdateStatus(orderIdList);
 
         // 发送至库存回滚主题
-        rocketMQTemplate.asyncSend(TopicConstant.STOCK_RELEASE_TOPIC, orderDtoList, new SendCallback() {
-            @Override
-            public void onSuccess(SendResult sendResult) {
-                log.info("库存回滚消息发送成功，发送时间: {}", LocalDateTime.now());
-            }
-
-            @Override
-            public void onException(Throwable throwable) {
-                log.info("库存回滚消息失败，请重试");
-            }
-        });
+        rocketMQTemplate.syncSend(TopicConstant.STOCK_RELEASE_TOPIC, orderDtoList);
     }
 }

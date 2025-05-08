@@ -71,4 +71,14 @@ public class OrderParam {
      */
     private String tag;
 
+    /**
+     * 更新后版本号
+     */
+    private Integer afterVersion;
+
+    /**
+     * 更新后库存
+     */
+    private Integer afterStocks;
+
 }

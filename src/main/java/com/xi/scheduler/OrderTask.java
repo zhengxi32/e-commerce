@@ -26,18 +26,18 @@ public class OrderTask {
 
     @XxlJob("expiredOrderFailure")
     public void expiredOrderFailure() {
-        log.info("过期订单失效定时任务开始执行，执行时间: {}", LocalDateTime.now());
+        log.info("The expired order becomes invalid and the scheduled task begins to be executed {}", LocalDateTime.now());
         List<OrderDto> timeoutOrders = orderService.getTimeoutOrders();
 
         rocketMQTemplate.asyncSend(TopicConstant.ORDER_CANCEL_TOPIC, timeoutOrders, new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
-                log.info("过期订单失效消息发送成功，执行完毕时间: {}", LocalDateTime.now());
+                log.info("The invalid message of the expired order was sent successfully {}", LocalDateTime.now());
             }
 
             @Override
             public void onException(Throwable e) {
-                log.error("过期订单失效消息发送失败", e);
+                log.error("The invalid message of the expired order failed to be sent", e);
             }
         });
     }

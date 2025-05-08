@@ -40,7 +40,7 @@ public class CanalConfig {
                                            @Value("${canal.process.interval:100}") long internal,
                                            @Value("${canal.batch.size:1000}") int batchSize) {
         return args -> {
-            log.info("以间隔 {} 秒与批处理大小 {} 启动Canal监听器", internal, batchSize);
+            log.info("Start the Canal listener at an interval of {} seconds and batch size {}", internal, batchSize);
             try {
                 startProcessingLoop(canalConnector, processorRouter, rocketMQTemplate, internal, batchSize);
             } catch (Exception e) {
@@ -66,7 +66,7 @@ public class CanalConfig {
                     connector.ack(batchId);
                 }
             } catch (Exception e) {
-                log.error("{} 批处理失败", batchId, e);
+                log.error("{} Batch processing failed", batchId, e);
                 connector.rollback(batchId);
             }
 
@@ -91,7 +91,7 @@ public class CanalConfig {
 
                         sendToRocketMQ(results, processor, router, mqTemplate);
                     } catch (Exception e) {
-                        log.error("无法处理表 {} 数据，找不到适配处理器", tableName, e);
+                        log.error("The table {} data cannot be processed and a suitable processor cannot be found", tableName, e);
                     }
                 });
     }
@@ -127,7 +127,7 @@ public class CanalConfig {
         try {
             Thread.sleep(internal);
         } catch (InterruptedException e) {
-            log.warn("Canal监听器睡眠期间被中断");
+            log.warn("The Canal listener was interrupted during sleep");
             e.printStackTrace();
         }
     }

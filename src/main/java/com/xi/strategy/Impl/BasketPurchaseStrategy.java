@@ -1,7 +1,6 @@
 package com.xi.strategy.Impl;
 
 import com.xi.constant.SystemConstant;
-import com.xi.constant.TopicConstant;
 import com.xi.entity.dto.BasketDto;
 import com.xi.entity.dto.SkuDto;
 import com.xi.entity.param.OrderParam;
@@ -12,7 +11,6 @@ import com.xi.service.SkuService;
 import com.xi.strategy.StockDecreaseStrategy;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.redisson.RedissonMultiLock;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -34,11 +32,8 @@ public class BasketPurchaseStrategy implements StockDecreaseStrategy {
     @Resource
     private RedissonClient redissonClient;
 
-    @Resource
-    private RocketMQTemplate rocketMQTemplate;
-
     @Override
-    public void decreaseStock(OrderParam orderParam) {
+    public boolean decreaseStock(OrderParam orderParam) {
         List<BasketDto> basketDtoList = orderParam.getBasketDtoList();
 
         // Redisson分布式锁
@@ -47,8 +42,8 @@ public class BasketPurchaseStrategy implements StockDecreaseStrategy {
         // SkuID排序 避免死锁
         basketService.sortListBySkuIdAsc(basketDtoList);
 
-        for (BasketDto basketDto : basketDtoList) {
-            rLocks[0] = redissonClient.getLock(SystemConstant.LOCK + basketDto.getSkuId());
+        for (int i = 0; i < basketDtoList.size(); i++) {
+            rLocks[i] = redissonClient.getLock(SystemConstant.LOCK + basketDtoList.get(i).getSkuId());
         }
         RedissonMultiLock redissonMultiLock = new RedissonMultiLock(rLocks);
 
@@ -62,24 +57,20 @@ public class BasketPurchaseStrategy implements StockDecreaseStrategy {
                 for (BasketDto basketDto : basketDtoList) {
                     // 乐观锁库存扣减
                     SkuDto skuDto = skuService.getStocksAndVersionBySkuId(basketDto.getSkuId());
-                    Boolean success = skuService.updateStocksLock(basketDto.getSkuId(), basketDto.getStocks(), skuDto.getVersion());
+                    Boolean success = skuService.updateStocksLock(basketDto, skuDto.getVersion());
                     flag &= success;
                 }
-
-                redissonMultiLock.unlock();
-
-                // 根据结果判断是否回滚与主题发送
-                if (!flag) {
-                    rocketMQTemplate.syncSend(TopicConstant.ORDER_ROLLBACK_TOPIC, orderParam);
-                    throw new BizException(ResponseCodeEnum.STOCKS_NOT_ENOUGH);
-                }
-                rocketMQTemplate.syncSend(TopicConstant.PAYMENT_TOPIC, orderParam);
+                return flag;
             }
+            throw new BizException(ResponseCodeEnum.STOCKS_NOT_ENOUGH);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+            throw new BizException(ResponseCodeEnum.SYSTEM_ERROR);
         } finally {
             // 释放锁
-            redissonMultiLock.unlock();
+            if (redissonMultiLock.isLocked() && redissonMultiLock.isHeldByCurrentThread()) {
+                redissonMultiLock.unlock();
+            }
         }
     }
 }

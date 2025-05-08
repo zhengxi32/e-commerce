@@ -42,7 +42,7 @@ public class SkuProcessor implements TableProcessor {
                     .map(rowData -> convertRowData(entry, rowChange, rowData))
                     .collect(Collectors.toList());
         } catch (Exception e) {
-            log.error("{} 表变更解析失败:", entry.getHeader().getTableName(), e);
+            log.error("{} Table change resolution failed:", entry.getHeader().getTableName(), e);
             throw new BizException(ResponseCodeEnum.CANAL_ANALYSIS_FAILURE);
         }
     }

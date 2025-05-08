@@ -1,6 +1,7 @@
 package com.xi.entity.tb;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -66,6 +67,12 @@ public class SkuDo implements Serializable {
     private Integer stocks;
 
     /**
+     * 更新后库存
+     */
+    @TableField(exist = false)
+    private Integer afterStocks;
+
+    /**
      * 商家编码
      */
     private String partyCode;
@@ -109,4 +116,10 @@ public class SkuDo implements Serializable {
      * 版本号
      */
     private Integer version;
+
+    /**
+     * 更新后版本号
+     */
+    @TableField(exist = false)
+    private Integer afterVersion;
 }
