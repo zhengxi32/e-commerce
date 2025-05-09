@@ -1,9 +1,12 @@
 package com.xi.strategy.Impl;
 
+import cn.hutool.core.util.IdUtil;
+import com.xi.constant.OrderTagConstant;
 import com.xi.entity.dto.SkuDto;
 import com.xi.entity.param.OrderParam;
 import com.xi.enums.ResponseCodeEnum;
 import com.xi.exception.BizException;
+import com.xi.service.OrderService;
 import com.xi.service.SkuService;
 import com.xi.strategy.StockDecreaseStrategy;
 import jakarta.annotation.Resource;
@@ -12,6 +15,7 @@ import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -23,6 +27,17 @@ public class DirectPurchaseStrategy implements StockDecreaseStrategy {
 
     @Resource
     private RedissonClient redissonClient;
+
+    @Resource
+    private OrderService orderService;
+
+    @Override
+    public void createOrder(OrderParam orderParam) {
+        // 订单流水
+        orderParam.setOrderSerialNumberList(Collections.singletonList(IdUtil.getSnowflake().nextIdStr()));
+        // 创建订单
+        orderService.createOrderAndUserAddrOrder(orderParam);
+    }
 
     @Override
     public boolean decreaseStock(OrderParam orderParam) {

@@ -20,7 +20,8 @@ public enum ResponseCodeEnum implements BaseException {
     PROD_NOT_EXIST("AUTH-20004", "商品不存在"),
     STOCKS_RELEASE_ERROR("AUTH-20005", "库存释放失败"),
     ORDER_SCENARIO_NOT_EXIST("AUTH-20006", "订单场景不存在"),
-    CANAL_ANALYSIS_FAILURE("AUTH-20007", "CANAL数据解析失败")
+    CANAL_ANALYSIS_FAILURE("AUTH-20007", "CANAL数据解析失败"),
+    ORDER_SERIAL_NUMBER_MISSING("AUTH-20008", "缺少订单流水号")
     ;
 
     // 异常码

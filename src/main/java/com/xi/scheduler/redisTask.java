@@ -41,12 +41,10 @@ public class redisTask {
                 if (acquired) {
                     // 获取库存和版本信息
                     RMap<String, Integer> rMap = redissonClient.getMap(skuDto.getSkuId());
-                    String version = RedisConstant.VERSION + skuDto.getSkuId();
-                    String stocks = RedisConstant.STOCKS + skuDto.getSkuId();
                     // 版本号落后 进行刷新
-                    if (rMap.get(version) < skuDto.getVersion()) {
-                        rMap.put(version, skuDto.getVersion());
-                        rMap.put(stocks, skuDto.getStocks());
+                    if (rMap.get(RedisConstant.VERSION) < skuDto.getVersion()) {
+                        rMap.put(RedisConstant.VERSION, skuDto.getVersion());
+                        rMap.put(RedisConstant.STOCKS, skuDto.getStocks());
                     }
                 } else log.warn("sku {} stocks synchronization failed, {}", skuDto.getSkuId(), LocalDateTime.now());
 

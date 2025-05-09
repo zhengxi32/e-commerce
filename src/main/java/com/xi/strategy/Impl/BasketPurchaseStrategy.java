@@ -1,5 +1,8 @@
 package com.xi.strategy.Impl;
 
+import cn.hutool.core.util.IdUtil;
+import com.alibaba.google.common.collect.Lists;
+import com.xi.constant.OrderTagConstant;
 import com.xi.constant.SystemConstant;
 import com.xi.entity.dto.BasketDto;
 import com.xi.entity.dto.SkuDto;
@@ -7,6 +10,7 @@ import com.xi.entity.param.OrderParam;
 import com.xi.enums.ResponseCodeEnum;
 import com.xi.exception.BizException;
 import com.xi.service.BasketService;
+import com.xi.service.OrderService;
 import com.xi.service.SkuService;
 import com.xi.strategy.StockDecreaseStrategy;
 import jakarta.annotation.Resource;
@@ -31,6 +35,32 @@ public class BasketPurchaseStrategy implements StockDecreaseStrategy {
 
     @Resource
     private RedissonClient redissonClient;
+
+    @Resource
+    private OrderService orderService;
+
+    @Override
+    public void createOrder(OrderParam orderParam) {
+        List<BasketDto> basketDtoList = orderParam.getBasketDtoList();
+
+        // Redis库存预检查
+        for (BasketDto basketDto : basketDtoList) {
+            if (skuService.getSkuDtoBySkuId(basketDto.getSkuId()).getStocks() < basketDto.getStocks()) {
+                throw new BizException(ResponseCodeEnum.STOCKS_NOT_ENOUGH);
+            }
+        }
+        List<String> orderSerialNumberList = Lists.newArrayList();
+
+        // 订单流水号
+        for (BasketDto basketDto : basketDtoList) {
+            String orderSerialNumber = IdUtil.getSnowflake().nextIdStr();
+            basketDto.setOrderSerialNumber(orderSerialNumber);
+            orderSerialNumberList.add(orderSerialNumber);
+        }
+
+        orderService.createOrderAndUserAddrOrder(basketDtoList);
+        orderParam.setOrderSerialNumberList(orderSerialNumberList);
+    }
 
     @Override
     public boolean decreaseStock(OrderParam orderParam) {
