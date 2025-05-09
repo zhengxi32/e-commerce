@@ -1,6 +1,7 @@
 package com.xi.config;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.xi.cache.MultiLevelCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -25,13 +26,18 @@ public class CacheConfig {
 
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory factory) {
-        logger.info("多级缓存开始载入");
-        CompositeCacheManager compositeCacheManager = new CompositeCacheManager(
-                caffeineCacheManager(),
-                redisCacheManager(factory)
+        // 创建 Caffeine 和 Redis 缓存管理器
+        CaffeineCacheManager caffeineCacheManager = caffeineCacheManager();
+        RedisCacheManager redisCacheManager = redisCacheManager(factory);
+
+        // 使用 MultiLevelCacheManager 替代 CompositeCacheManager
+        MultiLevelCacheManager multiLevelCacheManager = new MultiLevelCacheManager(
+                caffeineCacheManager,
+                redisCacheManager
         );
-        logger.info("多级缓存载入成功");
-        return compositeCacheManager;
+
+        logger.info("The local cache was loaded successfully");
+        return caffeineCacheManager;
     }
 
     private RedisCacheManager redisCacheManager(RedisConnectionFactory factory) {

@@ -15,10 +15,9 @@ import com.xi.entity.dto.ProdDto;
 public interface ProdService extends IService<ProdDo> {
 
     /**
-     * 根据商品ID获取商品信息
-     * @param prodId 商品ID
+     * 根据商品编码获取商品信息
+     * @param prodCode 商品ID
      * @return 商品信息
      */
-    ProdDto getProdDtoByProdId(String prodId);
-
+    ProdDto getProdDtoByProdCode(String prodCode);
 }

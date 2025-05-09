@@ -1,5 +1,6 @@
 package com.xi.scheduler;
 
+import cn.hutool.core.util.ObjUtil;
 import com.xi.constant.RedisConstant;
 import com.xi.entity.dto.SkuDto;
 import com.xi.service.SkuService;
@@ -42,7 +43,7 @@ public class redisTask {
                     // 获取库存和版本信息
                     RMap<String, Integer> rMap = redissonClient.getMap(skuDto.getSkuId());
                     // 版本号落后 进行刷新
-                    if (rMap.get(RedisConstant.VERSION) < skuDto.getVersion()) {
+                    if (ObjUtil.isNotEmpty(rMap.get(RedisConstant.VERSION)) && rMap.get(RedisConstant.VERSION) < skuDto.getVersion()) {
                         rMap.put(RedisConstant.VERSION, skuDto.getVersion());
                         rMap.put(RedisConstant.STOCKS, skuDto.getStocks());
                     }

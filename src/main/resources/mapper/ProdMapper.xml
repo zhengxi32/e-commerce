@@ -5,6 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.xi.entity.tb.ProdDo">
         <id column="prod_id" property="prodId" />
+        <result column="prod_code" property="prodCode" />
         <result column="prod_name" property="prodName" />
         <result column="shop_id" property="shopId" />
         <result column="price" property="price" />
@@ -23,7 +24,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        prod_id, prod_name, shop_id, price, brief, pic, images, status, category_id, sold_num, total_stocks, create_time, update_time, putaway_time, version
+        prod_id, prod_code, prod_name, shop_id, price, brief, pic, images, status, category_id, sold_num, total_stocks, create_time, update_time, putaway_time, version
     </sql>
 
     <update id="updateStocks">
@@ -40,10 +41,10 @@
         where status = 1
     </select>
 
-    <select id="getProdDtoByProdId" resultMap="BaseResultMap">
+    <select id="getProdDtoByProdCode" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"></include>
         from tb_prod
-        where prod_id = #{prodId}
+        where prod_code = #{prodCode}
     </select>
 
     <select id="getTotalStocksAndVersionByProdId" resultMap="BaseResultMap">

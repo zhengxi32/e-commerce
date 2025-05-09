@@ -1,5 +1,6 @@
 package com.xi.entity.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serial;
@@ -33,6 +34,12 @@ public class BasketDto implements Serializable {
     private String prodId;
 
     /**
+     * 产品编码
+     */
+    @NotNull
+    private String prodCode;
+
+    /**
      * 产品名字
      */
     private String prodName;
@@ -40,6 +47,7 @@ public class BasketDto implements Serializable {
     /**
      * SkuID
      */
+    @NotNull
     private String skuId;
 
     /**

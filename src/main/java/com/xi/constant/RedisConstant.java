@@ -42,4 +42,9 @@ public class RedisConstant {
      */
     public static String getStocksReleaseMessageKey(String orderSerialNumber) {return "STOCK:" + "RELEASE:" + orderSerialNumber;}
 
+    /**
+     * 解决缓存穿透
+     */
+    public static String checkProdExist(String prodCode) {return "PROD:" + "EXISTS:" + prodCode;}
+
 }

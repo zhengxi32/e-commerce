@@ -22,7 +22,7 @@ public interface ProdMapper extends BaseMapper<ProdDo> {
 
     Integer updateStocks(@Param("prodId") String prodId, @Param("totalStocks") Integer totalStocks);
 
-    ProdDo getProdDtoByProdId(@Param("prodId") String prodId);
+    ProdDo getProdDtoByProdCode(@Param("prodId") String prodId);
 
     Integer updateStocksLock(@Param("prodId") String prodId, @Param("totalStocks") Integer totalStocks, @Param("version") Integer version);
 

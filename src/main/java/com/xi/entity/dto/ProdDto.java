@@ -20,6 +20,11 @@ public class ProdDto implements Serializable {
     private String prodId;
 
     /**
+     * 商品编码
+     */
+    private String prodCode;
+
+    /**
      * 商品名称
      */
     private String prodName;

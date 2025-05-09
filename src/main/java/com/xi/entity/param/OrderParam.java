@@ -1,10 +1,9 @@
 package com.xi.entity.param;
 
 import com.xi.entity.dto.BasketDto;
-import jakarta.validation.Valid;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.lang.Nullable;
 
 import java.util.List;
 

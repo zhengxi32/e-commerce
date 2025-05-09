@@ -1,6 +1,7 @@
 package com.xi.strategy.Impl;
 
 import cn.hutool.core.util.IdUtil;
+import com.xi.annotation.RedisLock;
 import com.xi.constant.OrderTagConstant;
 import com.xi.entity.dto.SkuDto;
 import com.xi.entity.param.OrderParam;

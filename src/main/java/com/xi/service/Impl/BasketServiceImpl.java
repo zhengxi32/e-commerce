@@ -44,7 +44,7 @@ public class BasketServiceImpl extends ServiceImpl<BasketMapper, BasketDo> imple
         List<BasketDto> basketDtoList = this.baseMapper.getBasketListByUserId(userId);
 
         for (BasketDto basketDto : basketDtoList) {
-            ProdDto prodDto = prodService.getProdDtoByProdId(basketDto.getProdId());
+            ProdDto prodDto = prodService.getProdDtoByProdCode(basketDto.getProdCode());
             SkuDto skuDto = skuService.getSkuDtoBySkuId(basketDto.getSkuId());
 
             if (ObjUtil.isEmpty(prodDto) || ObjUtil.isEmpty(skuDto)) {

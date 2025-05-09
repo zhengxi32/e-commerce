@@ -49,6 +49,11 @@ public class OrderDto implements Serializable {
     private String prodId;
 
     /**
+     * 商品编码
+     */
+    private String prodCode;
+
+    /**
      * 单品ID
      */
     private String skuId;

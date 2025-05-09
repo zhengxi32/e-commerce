@@ -34,6 +34,7 @@ create table tb_prod
 (
     prod_id      bigint unsigned auto_increment COMMENT '产品ID'
         primary key,
+    prod_code    varchar(50) NOT NULL COMMENT '产品唯一编码',
     prod_name    varchar(300) DEFAULT '' NOT NULL COMMENT '商品名称',
     shop_id      bigint                  NULL COMMENT '店铺ID',
     price        decimal(15, 2)          NULL COMMENT '现价',
@@ -47,7 +48,8 @@ create table tb_prod
     create_time  datetime                NULL COMMENT '录入时间',
     update_time  datetime                NULL COMMENT '修改时间',
     putaway_time datetime                NULL COMMENT '上架时间',
-    version      int                     NULL COMMENT '版本号'
+    version      int                     NULL COMMENT '版本号',
+    unique key `uk_prod_code` (`prod_code`)
 ) COMMENT '商品表' charset = utf8mb4;
 
 drop table if exists tb_sku;
