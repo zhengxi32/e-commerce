@@ -50,24 +50,4 @@ public class OrderTask {
         });
     }
 
-    @XxlJob("HotspotDeletionAndReInsertion")
-    public void HotspotDeletionAndReInsertion() {
-        log.info("Hotspot deletion and reinsertion task begins to be executed {}", LocalDateTime.now());
-
-        RSortedSet<Object> sortedSet = redissonClient.getSortedSet(RedisConstant.HOT_PROD_KEY_SET);
-        RSet<Object> set = redissonClient.getSet(RedisConstant.VALID_PROD_KEY_SET);
-        sortedSet.forEach(x -> {
-            if (!set.contains(x)) {
-                sortedSet.remove(x);
-            }
-        });
-        int size = sortedSet.size();
-
-        set.forEach(x -> {
-            if (!sortedSet.contains(x) && sortedSet.size() < RedisConstant.HOT_PROD_KEY_SET_LIMIT) {
-                sortedSet.add(x);
-            }
-            else Thread.currentThread().interrupt();
-        });
-    }
 }
