@@ -37,7 +37,7 @@ public class StockReleaseListener implements RocketMQListener<List<OrderDto>> {
         log.info("Stocks release begins {}", LocalDateTime.now());
         Map<String, Integer> skuIdMap = new HashMap<>();
         orderDtoList.forEach(orderDto -> {
-            skuIdMap.merge(orderDto.getSkuId(), orderDto.getProdCount(), Integer::sum);
+            skuIdMap.merge(orderDto.getSkuId(), orderDto.getStocks(), Integer::sum);
         });
         for (Map.Entry<String, Integer> entry : skuIdMap.entrySet()) {
             skuService.releaseStock(entry.getKey(), entry.getValue());

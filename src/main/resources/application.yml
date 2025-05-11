@@ -99,4 +99,6 @@ xxl:
       addresses: http://127.0.0.1:8080/xxl-job-admin
     access-token: default-token
     log-path: /data/app/logs/xxl-job/jobHandler
-
+hot-spot:
+  max-size: 1000
+  refresh-batch-size: 200

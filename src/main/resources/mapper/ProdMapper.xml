@@ -53,4 +53,11 @@
         where prod_id = #{prodId}
     </select>
 
+    <select id="selectRandomList" resultType="com.xi.entity.tb.ProdDo">
+        select prod_code
+        from tb_prod
+        order by rand()
+        limit #{refreshSize}
+    </select>
+
 </mapper>

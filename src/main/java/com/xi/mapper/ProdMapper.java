@@ -27,5 +27,7 @@ public interface ProdMapper extends BaseMapper<ProdDo> {
     Integer updateStocksLock(@Param("prodId") String prodId, @Param("totalStocks") Integer totalStocks, @Param("version") Integer version);
 
     ProdDo getTotalStocksAndVersionByProdId(@Param("prodId") String prodId);
+
+    List<ProdDo> selectRandomList(@Param("refreshSize") int refreshSize);
 }
 

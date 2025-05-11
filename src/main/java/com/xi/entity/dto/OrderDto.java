@@ -163,4 +163,9 @@ public class OrderDto implements Serializable {
      */
     private Boolean closeType;
 
+    /**
+     * 下单产品数量
+     */
+    private Integer stocks;
+
 }

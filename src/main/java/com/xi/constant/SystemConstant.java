@@ -6,6 +6,4 @@ public class SystemConstant {
 
     public static final String SYS_NO = "0";
 
-    public static final String LOCK = "LOCK:";
-
 }

@@ -2,6 +2,7 @@ package com.xi.strategy;
 
 import com.xi.annotation.StockDecreaseResult;
 import com.xi.entity.param.OrderParam;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface StockDecreaseStrategy {
 
@@ -17,6 +18,7 @@ public interface StockDecreaseStrategy {
      * @return 扣减结果 @StockDecreaseResult根据结果发送消息到下游
      */
     @StockDecreaseResult
+    @Transactional
     boolean decreaseStock(OrderParam orderParam);
 
 }

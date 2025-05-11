@@ -67,12 +67,36 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDo> implemen
 
     @Override
     public void submitOrder(OrderParam orderParam) {
+        // 订单参数校验
+        checkValid(orderParam);
         // 发送半事务消息
         rocketMQTemplate.sendMessageInTransaction(
                 TopicConstant.ORDER_CREATE_TOPIC,
                 MessageBuilder.withPayload(orderParam).setHeader(MessageConst.PROPERTY_TAGS, OrderTagConstant.ORDER_TAG_DIRECT_PURCHASE).build(),
                 null
         );
+    }
+
+    /**
+     * 根据策略类型校验参数合法性
+     * @param orderParam 订单参数
+     */
+    private void checkValid(OrderParam orderParam) {
+        if (orderParam.getTag().equals(OrderTagConstant.ORDER_TAG_BASKET_PURCHASE) || orderParam.getTag().equals(OrderTagConstant.ORDER_TAG_SEC_KILL_BASKET_PURCHASE)) {
+            if (CollUtil.isEmpty(orderParam.getBasketDtoList())) {
+                throw new BizException(ResponseCodeEnum.ORDER_PARAM_ERROR);
+            }
+            for (BasketDto basketDto : orderParam.getBasketDtoList()) {
+                if (StrUtil.isEmpty(basketDto.getSkuId()) || ObjUtil.isEmpty(basketDto.getStocks())) {
+                    throw new BizException(ResponseCodeEnum.ORDER_PARAM_ERROR);
+                }
+            }
+        }
+        if (orderParam.getTag().equals(OrderTagConstant.ORDER_TAG_DIRECT_PURCHASE) || orderParam.getTag().equals(OrderTagConstant.ORDER_TAG_SEC_KILL_DIRECT_PURCHASE)) {
+            if (StrUtil.isEmpty(orderParam.getSkuId()) || ObjUtil.isEmpty(orderParam.getStocks())) {
+                throw new BizException(ResponseCodeEnum.ORDER_PARAM_ERROR);
+            }
+        }
     }
 
     @Override

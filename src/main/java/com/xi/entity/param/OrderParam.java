@@ -85,4 +85,9 @@ public class OrderParam {
      */
     private Integer afterStocks;
 
+    /**
+     * 下单产品数量
+     */
+    private Integer stocks;
+
 }

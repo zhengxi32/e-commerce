@@ -47,4 +47,19 @@ public class RedisConstant {
      */
     public static String checkProdExist(String prodCode) {return "PROD:" + "EXISTS:" + prodCode;}
 
+    /**
+     * 热点商品集合
+     */
+    public static final String HOT_PROD_KEY_SET = "HOT:PROD:KEY:SET";
+
+    /**
+     * 有效商品集合
+     */
+    public static final String VALID_PROD_KEY_SET = "VALID:PROD:KEY:SET";
+
+    /**
+     * sku单品锁
+     */
+    public static final String SKU_LOCK = "SKU:LOCK:";
+
 }

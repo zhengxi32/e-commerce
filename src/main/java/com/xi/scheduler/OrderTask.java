@@ -1,5 +1,6 @@
 package com.xi.scheduler;
 
+import com.xi.constant.RedisConstant;
 import com.xi.constant.TopicConstant;
 import com.xi.entity.dto.OrderDto;
 import com.xi.service.OrderService;
@@ -9,9 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
+import org.redisson.api.RSet;
+import org.redisson.api.RSortedSet;
+import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -23,6 +28,9 @@ public class OrderTask {
 
     @Resource
     private RocketMQTemplate rocketMQTemplate;
+
+    @Resource
+    private RedissonClient redissonClient;
 
     @XxlJob("expiredOrderFailure")
     public void expiredOrderFailure() {
@@ -42,4 +50,24 @@ public class OrderTask {
         });
     }
 
+    @XxlJob("HotspotDeletionAndReInsertion")
+    public void HotspotDeletionAndReInsertion() {
+        log.info("Hotspot deletion and reinsertion task begins to be executed {}", LocalDateTime.now());
+
+        RSortedSet<Object> sortedSet = redissonClient.getSortedSet(RedisConstant.HOT_PROD_KEY_SET);
+        RSet<Object> set = redissonClient.getSet(RedisConstant.VALID_PROD_KEY_SET);
+        sortedSet.forEach(x -> {
+            if (!set.contains(x)) {
+                sortedSet.remove(x);
+            }
+        });
+        int size = sortedSet.size();
+
+        set.forEach(x -> {
+            if (!sortedSet.contains(x) && sortedSet.size() < RedisConstant.HOT_PROD_KEY_SET_LIMIT) {
+                sortedSet.add(x);
+            }
+            else Thread.currentThread().interrupt();
+        });
+    }
 }

@@ -3,13 +3,16 @@ package com.xi.scheduler;
 import cn.hutool.core.util.ObjUtil;
 import com.xi.constant.RedisConstant;
 import com.xi.entity.dto.SkuDto;
+import com.xi.service.ProdService;
 import com.xi.service.SkuService;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RMap;
+import org.redisson.api.RScoredSortedSet;
 import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -26,6 +29,18 @@ public class redisTask {
     @Resource
     private RedissonClient redissonClient;
 
+    @Resource
+    private ProdService prodService;
+
+    @Value("${hot-spot.max-size}")
+    private int maxSize;
+
+    @Value("${hot-spot.refresh-batch-size}")
+    private int refreshBatchSize;
+
+    /**
+     * 缓存刷新
+     */
     @XxlJob("stockRefresh")
     public void stockRefresh() {
         log.info("The stocks synchronization scheduled task has started to execute {}", LocalDateTime.now());
@@ -54,6 +69,15 @@ public class redisTask {
             }
 
         }
+    }
+
+    /**
+     * 热点商品集合刷新
+     */
+    @XxlJob("hotSpotRefresh")
+    public void hotSpotRefresh() {
+        log.info("The hotSpot refresh scheduled task has started to execute {}", LocalDateTime.now());
+        prodService.refreshHotProdZSet(refreshBatchSize);
     }
 
 }

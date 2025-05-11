@@ -20,4 +20,10 @@ public interface ProdService extends IService<ProdDo> {
      * @return 商品信息
      */
     ProdDto getProdDtoByProdCode(String prodCode);
+
+    /**
+     * 刷新热点商品
+     * @param refreshSize 刷新大小
+     */
+    public void refreshHotProdZSet(int refreshSize);
 }

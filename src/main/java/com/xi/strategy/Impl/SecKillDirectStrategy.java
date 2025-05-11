@@ -59,7 +59,7 @@ public class SecKillDirectStrategy implements StockDecreaseStrategy {
                 RScript.ReturnType.INTEGER,
                 Collections.singletonList(RedisConstant.getSkuKey(orderParam.getSkuId())),
                 RedisConstant.STOCKS,
-                orderParam.getProdCount(),
+                orderParam.getStocks(),
                 RedisConstant.VERSION
         );
 

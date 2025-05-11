@@ -52,7 +52,7 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, SkuDo> implements Sku
 
     @Override
     public Boolean updateStocksLock(OrderParam orderParam, Integer skuVersion) {
-        SkuDo skuDo = this.baseMapper.updateStocksLock(orderParam.getSkuId(), orderParam.getProdCount(), skuVersion);
+        SkuDo skuDo = this.baseMapper.updateStocksLock(orderParam.getSkuId(), orderParam.getStocks(), skuVersion);
         if (ObjUtil.isEmpty(skuDo)) {
             return Boolean.FALSE;
         }
