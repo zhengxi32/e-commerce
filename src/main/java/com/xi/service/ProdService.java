@@ -1,5 +1,7 @@
 package com.xi.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.xi.entity.param.ProdParam;
 import com.xi.entity.tb.ProdDo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xi.entity.dto.ProdDto;
@@ -26,4 +28,11 @@ public interface ProdService extends IService<ProdDo> {
      * @param refreshSize 刷新大小
      */
     public void refreshHotProdZSet(int refreshSize);
+
+    /**
+     * 分页普通查询
+     * @param prodParam 商品参数
+     * @return
+     */
+     IPage<ProdDto> generalSearch(ProdParam prodParam);
 }

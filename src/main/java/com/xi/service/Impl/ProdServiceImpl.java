@@ -1,9 +1,11 @@
 package com.xi.service.Impl;
 
 import cn.hutool.core.util.ObjUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xi.constant.RedisConstant;
 import com.xi.convert.ProdConvert;
+import com.xi.entity.param.ProdParam;
 import com.xi.entity.tb.ProdDo;
 import com.xi.entity.dto.ProdDto;
 import com.xi.enums.ResponseCodeEnum;
@@ -78,6 +80,11 @@ public class ProdServiceImpl extends ServiceImpl<ProdMapper, ProdDo> implements 
         prodDoList.forEach(prodDo -> {
             set.add(System.currentTimeMillis(), prodDo.getProdCode());
         });
+    }
+
+    @Override
+    public IPage<ProdDto> generalSearch(ProdParam prodParam) {
+        return null;
     }
 
 }

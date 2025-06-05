@@ -1,8 +1,10 @@
 package com.xi.controller;
 
 import com.alibaba.druid.filter.config.ConfigTools;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.xi.common.Response;
 import com.xi.entity.dto.ProdDto;
+import com.xi.entity.param.ProdParam;
 import com.xi.mapper.ProdMapper;
 import com.xi.service.ProdService;
 import jakarta.annotation.Resource;
@@ -26,6 +28,11 @@ public class ProdController {
 
     @Resource
     private ProdService prodService;
+
+    @GetMapping
+    public Response<IPage<ProdDto>> generalSearch(@RequestBody @NotNull ProdParam prodParam) {
+        return Response.success(prodService.generalSearch(prodParam));
+    }
 
     @GetMapping
     public Response<ProdDto> getProdDetail(@RequestParam String prodCode) {

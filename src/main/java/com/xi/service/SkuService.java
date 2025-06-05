@@ -19,7 +19,7 @@ import java.util.List;
 public interface SkuService extends IService<SkuDo> {
 
     /**
-     * 根据SkuID查询Sku信息
+     * 根据SkuID查询Sku信息 缓存 —> 数据库
      *
      * @param skuId SkuID
      * @return Sku
